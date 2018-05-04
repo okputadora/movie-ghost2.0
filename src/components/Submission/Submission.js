@@ -5,8 +5,8 @@ import Button from '../UI/Button/Button';
 
 const submission = (props) => (
   <div className={classes.Submission}>
-    <TextInput />
-    <Button>Enter</Button>
+    <TextInput changed={props.guessListener}/>
+    <Button clicked={props.guessed}>Enter</Button>
   </div>
 )
 
