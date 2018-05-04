@@ -11,25 +11,31 @@ class Arena extends Component{
   state = {
     players: [],
     activePlayer: '',
-    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
+    movie: false, //boolean for whether the user should be entering a move (false = enter actor)
     trail: [],
     guess: '',
-    previousGuess: '' // when checking the guess we'll need to use the prevGuess to find possible correct answers
   }
 
   guessHandler = () => {
     let guess = this.state.guess;
-    console.log(guess)
-    // check OMDB for correctness
     console.log(axios)
-    axios.get("?api_key="+API_KEY+"&query="+guess)
+    // check OMDB for correctness
+    // select axios instance based on what we're searching for
+    let searchMethod = this.state.movie ? axios.movieSearch : axios.actorSearch;
+    searchMethod.get("?api_key="+API_KEY+"&query="+guess)
+    // if result ->
     .then(result => {
-      console.log(result)
+      console.log(result.data.results[0])
+      const response = result.data.results[0];
+      // check if this answer is unique -- repeats not allowed
+      if (this.state.trail.indexOf(response.title)){
+        // answer is a duplicate
+      }
     })
+    // if no result
     .catch(err => {
       console.log(err)
     })
-      // if result ->
       // if correct ->
         // update this.state.activePlayer
         // update this.state.movie
