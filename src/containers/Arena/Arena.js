@@ -9,9 +9,9 @@ const API_KEY = process.env.REACT_APP_OMDB_KEY;
 
 class Arena extends Component{
   state = {
-    players: [],
-    activePlayer: '',
-    movie: false, //boolean for whether the user should be entering a move (false = enter actor)
+    players: ['mike', 'robot1'],
+    activePlayer: 'mike',
+    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
     trail: [],
     guess: '',
   }
@@ -26,21 +26,12 @@ class Arena extends Component{
     // if result ->
     .then(result => {
       console.log(result.data.results[0])
-      const response = result.data.results[0];
-      // check if this answer is unique -- repeats not allowed
-      if (this.state.trail.indexOf(response.title)){
-        // answer is a duplicate
-      }
+      this.updateAfterGuess(result.data.results[0]);
     })
     // if no result
     .catch(err => {
       console.log(err)
     })
-      // if correct ->
-        // update this.state.activePlayer
-        // update this.state.movie
-        // update this.state.guess
-        // update.this.state.trail
   }
 
   updateGuess = (event) => {
@@ -51,18 +42,47 @@ class Arena extends Component{
       guess: currentGuess
     })
   }
+
+  updateAfterGuess (response) {
+    // check for uniqueness
+    if (this.state.trail.indexOf(response.title) === -1){
+      // update the trail
+      let updatedTrail = [...this.state.trail];
+      const newItem = {
+        title: response.title,
+        year: response.release_date.slice(0,4),
+        image: response
+      }
+      updatedTrail.push(newItem)
+      // update the current player
+      let activeIndex = this.state.players.indexOf(this.state.activePlayer) + 1;
+      activeIndex = (activeIndex >= this.state.players.length) ? 0 : activeIndex;
+      const updatedActivePlayer = this.state.players[activeIndex]
+      this.setState({
+        activePlayer: updatedActivePlayer,
+        trail: updatedTrail
+      })
+    }
+    // if not unique
+  }
   render(){
+    const instruction = this.state.movie ? "enter the name of a movie" : "enter the name of an actor";
+    const turn = this.state.activePlayer + "'s turn"
+
     return (
       <div className={classes.Arena}>
         <Instruction
-          currentTurn="Mike's turn"
-          currentInstruction="Enter the name of a movie or an actor"
+          currentTurn={turn}
+          currentInstruction={instruction}
         />
         <Submission
           guessListener={this.updateGuess}
           guessed={this.guessHandler}/>
-        <Avatars />
-        <Trail />
+        <Avatars
+          players={this.state.players}
+          active={this.state.activePlayer}
+        />
+        <Trail trail={this.state.trail}/>
       </div>
     )
   }

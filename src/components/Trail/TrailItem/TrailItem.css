@@ -1,3 +1,11 @@
 .TrailItem {
-  height: 20px;
+  display: flex;
+  flex-flow: column;
+  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
+}
+
+.Img {
+  height: 35px;
 }

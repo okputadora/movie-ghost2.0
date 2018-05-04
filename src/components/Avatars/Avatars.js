@@ -3,10 +3,13 @@ import Avatar from './Avatar/Avatar'
 import classes from './Avatars.css';
 
 const avatars = (props) => {
+  const avatarElems = props.players.map(player => {
+    let active = (props.active === player) ? true : false
+    return <Avatar name={player} active={active} />
+      })
   return (
     <div className={classes.Avatars}>
-      <Avatar name="mike" active={true}/>
-      <Avatar name="bill" active={false}/>
+      {avatarElems}
     </div>
   )
 }

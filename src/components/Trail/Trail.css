@@ -3,5 +3,5 @@
   display: flex;
   margin-top: 5px;
   padding: 5px;
-  align-items: flex-end;
+  align-items: flex-start;
 }
