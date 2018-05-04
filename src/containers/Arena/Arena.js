@@ -9,10 +9,24 @@ const API_KEY = process.env.REACT_APP_OMDB_KEY;
 
 class Arena extends Component{
   state = {
-    players: ['mike', 'robot1'],
-    activePlayer: 'mike',
-    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
-    trail: [],
+    players: [
+      {
+        name: 'mike',
+        human: true,
+        letters: '',
+      },
+      {
+        name:'robot1',
+        human: false,
+        letters: '',
+      }
+    ],
+    activePlayer: {
+      name: 'mike',
+      human: true,
+    },
+    movie: false, //boolean for whether the user should be entering a move (false = enter actor)
+    trail: [{name: 'it', year: '2017', img:null}],
     guess: '',
   }
 
@@ -55,34 +69,41 @@ class Arena extends Component{
       }
       updatedTrail.push(newItem)
       // update the current player
-      let activeIndex = this.state.players.indexOf(this.state.activePlayer) + 1;
+      const players = this.state.players.map(player => (player.name));
+      let activeIndex = players.indexOf(this.state.activePlayer.name) + 1;
       activeIndex = (activeIndex >= this.state.players.length) ? 0 : activeIndex;
-      const updatedActivePlayer = this.state.players[activeIndex]
+      const updatedActivePlayer = this.state.players[activeIndex];
+      // update movie or actor for next search
+      const acceptingMovie = this.state.movie ? false : true;
+      // update state
       this.setState({
         activePlayer: updatedActivePlayer,
-        trail: updatedTrail
+        trail: updatedTrail,
+        movie: acceptingMovie,
+        guess: ''
       })
     }
     // if not unique
   }
   render(){
-    const instruction = this.state.movie ? "enter the name of a movie" : "enter the name of an actor";
-    const turn = this.state.activePlayer + "'s turn"
-
+    console.log()
     return (
-      <div className={classes.Arena}>
+      <div className = {classes.Arena}>
         <Instruction
-          currentTurn={turn}
-          currentInstruction={instruction}
+          lastEntry = {this.state.trail[this.state.trail.length - 1]}
+          activePlayer = {this.state.activePlayer.name}
+          acceptingMovie = {this.state.movie}
         />
         <Submission
-          guessListener={this.updateGuess}
-          guessed={this.guessHandler}/>
-        <Avatars
-          players={this.state.players}
-          active={this.state.activePlayer}
+          humanPlayer = {this.state.activePlayer.human}
+          guessListener = {this.updateGuess}
+          guessed = {this.guessHandler}
         />
-        <Trail trail={this.state.trail}/>
+        <Avatars
+          players = {this.state.players}
+          active = {this.state.activePlayer}
+        />
+        <Trail trail = {this.state.trail}/>
       </div>
     )
   }
