@@ -1,0 +1,6 @@
+.Arena {
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  height: 82vh;
+}

@@ -1,0 +1,18 @@
+.Avatar {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: flex-end;
+  border: 1px solid green;
+  margin: 20px 5px 0px 5px;
+}
+
+.Active {
+  height: 100px;
+  width: 100px;
+}
+
+.OnDeck {
+  height: 20px;
+  width: 20px;
+}
