@@ -1,5 +1,6 @@
 .Instruction {
-  border: 3px solid blue;
   text-align: center;
   padding: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
 }

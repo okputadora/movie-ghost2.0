@@ -5,6 +5,11 @@ import Instruction from '../../components/Instruction/Instruction';
 import Submission from '../../components/Submission/Submission'
 import Trail from '../../components/Trail/Trail'
 class Arena extends Component{
+  state = {
+    players: [],
+    currentTurn: '',
+    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
+  }
   render(){
     return (
       <div className={classes.Arena}>

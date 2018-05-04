@@ -6,11 +6,8 @@ const avatar = (props) => {
   // conditionally render image size based on active status
   let imgClass = classes.OnDeck
   if (props.active){
-    console.log("active?")
     imgClass = classes.Active;
-    console.log(imgClass)
   }
-  console.log(imgClass)
   return (
     <div className={classes.Avatar}>
       <img className={imgClass} src={blankAvatar} alt={props.name}/>

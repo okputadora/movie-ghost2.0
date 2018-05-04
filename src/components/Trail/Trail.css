@@ -1,6 +1,7 @@
 .Trail {
+  flex-grow: 2;
   display: flex;
   margin-top: 5px;
   padding: 5px;
-  border: 2px solid green
+  align-items: flex-end;
 }
