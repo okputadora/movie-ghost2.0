@@ -33,31 +33,44 @@ class Arena extends Component{
     guess: '',
   }
 
-  guessHandler = () => {
-    let guess = this.state.guess;
-    // check MDB for correctness
-    mdb.searchMovie({query: guess}, (err, res) => {
-      this.checkGuess(res.results[0])
-    })
-    // if result ->
-    // .then(result => {
-    //   console.log(result.data)
-    //   this.checkGuess(result.data.results[0]);
-    // })
-    // // if no result
-    // .catch(err => {
-    //   console.log(err)
-    // })
+  componentDidUpdate(){
+    // if its a robots turn
+    if (!this.state.activePlayer.human){
+      // wait a little bit for a better UX
+      setTimeout(this.robotGuess, 1000)
+    }
   }
 
   updateGuess = (event) => {
     let currentGuess = this.state.guess;
-    currentGuess = event.target.value
+    currentGuess = event.target.value;
     this.setState({
       guess: currentGuess
     })
   }
 
+  guessHandler = () => {
+    let guess = this.state.guess;
+    // check MDB for correctness
+    if (this.state.movie){
+      mdb.searchMovie({query: guess}, (err, res) => {
+        return this.checkGuess(res.results[0])
+      })
+    }
+    mdb.searchPerson({query: guess}, (err, res) => {
+    })
+  }
+
+  robotGuess(){
+    // if the robots picking an actor
+    if (this.state.movie){
+      // go through previousCast and find one not played yet
+      this.state.previousCast.forEach(actor => {
+        
+      })
+    }
+    console.log("RObot's turn")
+  }
   checkGuess (response) {
     // get the name of actor or movie
     const name = this.state.movie ? response.title : response.name;
@@ -71,30 +84,34 @@ class Arena extends Component{
       if (this.state.movie){
         // get the cast and see if lastEntry is in it
         mdb.movieCredits({id: response.id}, (err, res) => {
-          let cast = res.cast.map(elem => elem.name.toLowerCase())
+          const cast = res.cast.map(elem => elem.name.toLowerCase())
           if (cast.indexOf(lastEntry.toLowerCase()) !== -1){
             console.log("CORRECT ANSWER",name)
-            this.updateAfterGuess(name, cast, response.release_date.slice(0,4));
+            return this.updateAfterCorrectGuess(name, cast, response.release_date.slice(0,4));
+          }
+          else{
+            console.log("incorrectAnswer")
           }
         })
-        // omdb.getCast(response.id)
-        // .then(response => {
-        //   console.log(response)
-        // })
-        return;
       }
       // if we're submitting an actor we can check state.previousCast
-      console.log("loop through actors in prevCast state")
+      if (this.state.previousCast.indexOf(name.toLowerCase()) !== -1){
+        console.log("correct answer")
+        return;
+      }
+      console.log("incorrect answer")
     }
+    // otherwise we just need to look at the previousCast
+    // and see if our guess is in there
   }
-  updateAfterGuess(name, cast, year){
+  updateAfterCorrectGuess(name, cast, year){
+    console.log("CAST HERE LOOK LIKE ", cast)
     // update the trail
     let updatedTrail = [...this.state.trail];
     const newItem = {
       name: name,
       year: year,
       image: '',
-      previousCast: cast
     }
     updatedTrail.push(newItem)
     // update the current player
@@ -109,8 +126,13 @@ class Arena extends Component{
       activePlayer: updatedActivePlayer,
       trail: updatedTrail,
       movie: acceptingMovie,
-      guess: ''
+      previousCast: cast,
+      guess: '',
     })
+  }
+
+  updateAfterWrongGuess(){
+
   }
   render(){
     console.log()

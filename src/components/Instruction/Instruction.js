@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './Instruction.css';
 
 const instruction = (props) => {
-  console.log(props.lastEntry.name)
   let instruction;
   if (props.acceptingMovie){
     instruction = "Enter the name of a movie "
