@@ -4,6 +4,9 @@ import classes from './Arena.css';
 import Instruction from '../../components/Instruction/Instruction';
 import Submission from '../../components/Submission/Submission'
 import Trail from '../../components/Trail/Trail'
+import axios from '../../utils/axios'
+const API_KEY = process.env.REACT_APP_OMDB_KEY;
+
 class Arena extends Component{
   state = {
     players: [],
@@ -16,7 +19,16 @@ class Arena extends Component{
 
   guessHandler = () => {
     let guess = this.state.guess;
+    console.log(guess)
     // check OMDB for correctness
+    console.log(axios)
+    axios.get("?api_key="+API_KEY+"&query="+guess)
+    .then(result => {
+      console.log(result)
+    })
+    .catch(err => {
+      console.log(err)
+    })
       // if result ->
       // if correct ->
         // update this.state.activePlayer
@@ -28,7 +40,7 @@ class Arena extends Component{
   updateGuess = (event) => {
     console.log(event.target.value)
     let currentGuess = this.state.guess;
-    currentGuess += event.target.value
+    currentGuess = event.target.value
     this.setState({
       guess: currentGuess
     })
