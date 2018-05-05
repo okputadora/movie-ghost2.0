@@ -27,9 +27,9 @@ class Arena extends Component{
       name: 'mike',
       human: true,
     },
-    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
-    previousCast: [],
-    trail: [{name: 'Tom Hanks', year: null, img:null}],
+    movie: false, //boolean for whether the user should be entering a move (false = enter actor)
+    previousCast: ["tom hanks"],
+    trail: [{name: 'Forrest Gump', year: "1994", img:null}],
     guess: '',
   }
 
@@ -51,14 +51,13 @@ class Arena extends Component{
 
   guessHandler = () => {
     let guess = this.state.guess;
-    // check MDB for correctness
+    // check MDB to see if the guess is a real movie
     if (this.state.movie){
       mdb.searchMovie({query: guess}, (err, res) => {
         return this.checkGuess(res.results[0])
       })
     }
-    mdb.searchPerson({query: guess}, (err, res) => {
-    })
+    return this.checkGuess(guess)
   }
 
   robotGuess = () => {
@@ -84,11 +83,12 @@ class Arena extends Component{
         }
       }
     }
-    console.log("RObot's turn")
+    // if the robot is picking a movie
+    
   }
   checkGuess (response) {
     // get the name of actor or movie
-    const name = this.state.movie ? response.title : response.name;
+    const name = this.state.movie ? response.title : response;
     // check for uniqueness
     if (this.state.trail.indexOf(name) === -1 && this.state.trail.length > 0 ){
       // check for accuracy -- i.e. is this a movie the prev actor was in?
@@ -111,8 +111,7 @@ class Arena extends Component{
       }
       // if we're submitting an actor we can check state.previousCast
       if (this.state.previousCast.indexOf(name.toLowerCase()) !== -1){
-        console.log("correct answer")
-        return;
+        return this.updateAfterCorrectGuess(name)
       }
       console.log("incorrect answer")
     }
