@@ -82,9 +82,47 @@ class Arena extends Component{
           break;
         }
       }
+      // the robot could not find a unique answer...this shouldn't ever happen
     }
     // if the robot is picking a movie
-    
+    else{
+      let prevEntry = this.state.trail[this.state.trail.length - 1].name
+      mdb.searchPerson({query: prevEntry}, (err, res) => {
+        let possibleMovies = res.results[0].known_for;
+        // go through the possible movies and find a unique one
+        console.log(possibleMovies)
+        // THIS IS THE SAME AS THE FOR LOOPS ABOVE
+        // CONSIDER MAKING ITW OWN FUNCTION
+        let duplicate;
+        for (let i = 0; i < possibleMovies.length; i++){
+          let title = possibleMovies[i].title.toLowerCase();
+          duplicate = false;
+          for (let x = 0; x < this.state.trail.length; x++){
+            let prevEntry = this.state.trail[x].name.toLowerCase();
+            if (prevEntry === title){
+              duplicate = true;
+              break;
+            }
+          }
+          if (!duplicate){
+            console.log(title)
+            // get the cast for this movie
+            console.log(possibleMovies[i].id)
+            mdb.movieCredits({id: possibleMovies[i].id}, (err, res) => {
+              console.log(res)
+              let cast = res.cast.map(elem => elem.name.toLowerCase())
+              this.updateAfterCorrectGuess(title, cast, possibleMovies[i].release_date.slice(0,4))
+            })
+            break;
+          }
+        }
+      })
+    }
+
+  }
+
+  getCredits(movieId){
+
   }
   checkGuess (response) {
     // get the name of actor or movie
@@ -98,7 +136,7 @@ class Arena extends Component{
       if (this.state.movie){
         // get the cast and see if lastEntry is in it
         mdb.movieCredits({id: response.id}, (err, res) => {
-          const cast = res.cast.map(elem => elem.name.toLowerCase())
+          let cast = res.cast.map(elem => elem.name.toLowerCase())
           if (cast.indexOf(lastEntry.toLowerCase()) !== -1){
             console.log("CORRECT ANSWER",name)
             return this.updateAfterCorrectGuess(name, cast, response.release_date.slice(0,4));
