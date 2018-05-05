@@ -3,9 +3,9 @@ import classes from './TrailItem.css'
 
 const trailItem = (props) => (
   <div className={classes.TrailItem}>
-    <div className={classes.Img}>Image placeholder</div>
-    <div>{props.title}</div>
-    <div>({props.year})</div>
+    <img className={classes.Img} src={props.image} alt={props.name}/>
+    <div>{props.name}</div>
+    <div>{props.year}</div>
   </div>
 )
 

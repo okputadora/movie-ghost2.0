@@ -4,8 +4,6 @@ import classes from './Arena.css';
 import Instruction from '../../components/Instruction/Instruction';
 import Submission from '../../components/Submission/Submission'
 import Trail from '../../components/Trail/Trail'
-// import axios from '../../utils/axios'
-// import mdb from '../../utils/mdbFunctions'
 const API_KEY = process.env.REACT_APP_MDB_KEY;
 const mdb = require('moviedb')(API_KEY)
 
@@ -27,9 +25,9 @@ class Arena extends Component{
       name: 'mike',
       human: true,
     },
-    movie: false, //boolean for whether the user should be entering a move (false = enter actor)
-    previousCast: ["tom hanks"],
-    trail: [{name: 'Forrest Gump', year: "1994", img:null}],
+    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
+    previousCast: [],
+    trail: [{name: 'tom hanks', year: null, img:null}],
     guess: '',
   }
 
@@ -37,6 +35,7 @@ class Arena extends Component{
     // if its a robots turn
     if (!this.state.activePlayer.human){
       // wait a little bit for a better UX
+      // and then let the robot make a "guess"
       setTimeout(this.robotGuess, 1000)
     }
   }
@@ -57,7 +56,7 @@ class Arena extends Component{
         return this.checkGuess(res.results[0])
       })
     }
-    return this.checkGuess(guess)
+    else {return this.checkGuess(guess)}
   }
 
   robotGuess = () => {
@@ -90,7 +89,6 @@ class Arena extends Component{
       mdb.searchPerson({query: prevEntry}, (err, res) => {
         let possibleMovies = res.results[0].known_for;
         // go through the possible movies and find a unique one
-        console.log(possibleMovies)
         // THIS IS THE SAME AS THE FOR LOOPS ABOVE
         // CONSIDER MAKING ITW OWN FUNCTION
         let duplicate;
@@ -105,11 +103,8 @@ class Arena extends Component{
             }
           }
           if (!duplicate){
-            console.log(title)
             // get the cast for this movie
-            console.log(possibleMovies[i].id)
             mdb.movieCredits({id: possibleMovies[i].id}, (err, res) => {
-              console.log(res)
               let cast = res.cast.map(elem => elem.name.toLowerCase())
               this.updateAfterCorrectGuess(title, cast, possibleMovies[i].release_date.slice(0,4))
             })
@@ -118,12 +113,8 @@ class Arena extends Component{
         }
       })
     }
-
   }
-
-  getCredits(movieId){
-
-  }
+  // check human guess
   checkGuess (response) {
     // get the name of actor or movie
     const name = this.state.movie ? response.title : response;
@@ -134,12 +125,13 @@ class Arena extends Component{
       // if we're submitting a movie we need to check if the previous
       // actor is in that movie
       if (this.state.movie){
+        console.log(response.id)
         // get the cast and see if lastEntry is in it
         mdb.movieCredits({id: response.id}, (err, res) => {
           let cast = res.cast.map(elem => elem.name.toLowerCase())
           if (cast.indexOf(lastEntry.toLowerCase()) !== -1){
             console.log("CORRECT ANSWER",name)
-            return this.updateAfterCorrectGuess(name, cast, response.release_date.slice(0,4));
+            return this.updateAfterCorrectGuess(name, cast, response.release_date.slice(0,4), response.id);
           }
           else{
             console.log("incorrectAnswer")
@@ -153,32 +145,49 @@ class Arena extends Component{
       }
       console.log("incorrect answer")
     }
-    // otherwise we just need to look at the previousCast
-    // and see if our guess is in there
   }
-  updateAfterCorrectGuess(name, cast, year){
-    // update the trail
-    let updatedTrail = [...this.state.trail];
-    let newEntry = {
-      name: name,
-      year: year,
-      image: '',
-    }
-    updatedTrail.push(newEntry)
-    // update the current player
-    let players = this.state.players.map(player => (player.name));
-    let activeIndex = players.indexOf(this.state.activePlayer.name) + 1;
-    activeIndex = (activeIndex >= this.state.players.length) ? 0 : activeIndex;
-    let updatedActivePlayer = this.state.players[activeIndex];
-    // update movie or actor for next search
-    let acceptingMovie = this.state.movie ? false : true;
-    // update state
-    this.setState({
-      activePlayer: updatedActivePlayer,
-      trail: updatedTrail,
-      movie: acceptingMovie,
-      previousCast: cast,
-      guess: '',
+
+  getImage(id){
+    return new Promise((resolve, reject) => {
+      if (this.state.movie){
+        mdb.movieImages({id: id}, (err, res) => {
+          console.log(res)
+          let baseUrl =  'http://image.tmdb.org/t/p/w185//'
+          let image = baseUrl + res.posters[0].file_path
+          resolve(image)
+        })
+      }
+    })
+  }
+
+  updateAfterCorrectGuess(name, cast, year, id){
+    // get the image
+    this.getImage(id)
+    .then(image => {
+      console.log("IMAGE", image)
+      // update the trail
+      let updatedTrail = [...this.state.trail];
+      let newEntry = {
+        name: name,
+        year: year,
+        image: image,
+      }
+      updatedTrail.push(newEntry)
+      // update the current player
+      let players = this.state.players.map(player => (player.name));
+      let activeIndex = players.indexOf(this.state.activePlayer.name) + 1;
+      activeIndex = (activeIndex >= this.state.players.length) ? 0 : activeIndex;
+      let updatedActivePlayer = this.state.players[activeIndex];
+      // update movie or actor for next search
+      let acceptingMovie = this.state.movie ? false : true;
+      // update state
+      this.setState({
+        activePlayer: updatedActivePlayer,
+        trail: updatedTrail,
+        movie: acceptingMovie,
+        previousCast: cast,
+        guess: '',
+      })
     })
   }
 
@@ -186,7 +195,6 @@ class Arena extends Component{
 
   }
   render(){
-    console.log()
     return (
       <div className = {classes.Arena}>
         <Instruction
