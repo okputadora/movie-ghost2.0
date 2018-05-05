@@ -61,20 +61,34 @@ class Arena extends Component{
     })
   }
 
-  robotGuess(){
+  robotGuess = () => {
     // if the robots picking an actor
-    if (this.state.movie){
+    if (!this.state.movie){
       // go through previousCast and find one not played yet
-      this.state.previousCast.forEach(actor => {
-        
-      })
+      let duplicate;
+      for (let i = 0; i < this.state.previousCast.length; i++){
+        let actor = this.state.previousCast[i];
+        duplicate = false;
+        for (let x = 0; x < this.state.trail.length; x++){
+          let prevEntry = this.state.trail[x].name;
+          console.log(actor, prevEntry)
+          if (actor.toLowerCase() === prevEntry.toLowerCase()){
+            duplicate = true
+            break;
+          }
+        }
+        if (!duplicate){
+          console.log(actor)
+          this.updateAfterCorrectGuess(actor)
+          break;
+        }
+      }
     }
     console.log("RObot's turn")
   }
   checkGuess (response) {
     // get the name of actor or movie
     const name = this.state.movie ? response.title : response.name;
-    console.log("NAME<",name)
     // check for uniqueness
     if (this.state.trail.indexOf(name) === -1 && this.state.trail.length > 0 ){
       // check for accuracy -- i.e. is this a movie the prev actor was in?
@@ -93,6 +107,7 @@ class Arena extends Component{
             console.log("incorrectAnswer")
           }
         })
+        return;
       }
       // if we're submitting an actor we can check state.previousCast
       if (this.state.previousCast.indexOf(name.toLowerCase()) !== -1){
@@ -105,22 +120,21 @@ class Arena extends Component{
     // and see if our guess is in there
   }
   updateAfterCorrectGuess(name, cast, year){
-    console.log("CAST HERE LOOK LIKE ", cast)
     // update the trail
     let updatedTrail = [...this.state.trail];
-    const newItem = {
+    let newEntry = {
       name: name,
       year: year,
       image: '',
     }
-    updatedTrail.push(newItem)
+    updatedTrail.push(newEntry)
     // update the current player
-    const players = this.state.players.map(player => (player.name));
+    let players = this.state.players.map(player => (player.name));
     let activeIndex = players.indexOf(this.state.activePlayer.name) + 1;
     activeIndex = (activeIndex >= this.state.players.length) ? 0 : activeIndex;
-    const updatedActivePlayer = this.state.players[activeIndex];
+    let updatedActivePlayer = this.state.players[activeIndex];
     // update movie or actor for next search
-    const acceptingMovie = this.state.movie ? false : true;
+    let acceptingMovie = this.state.movie ? false : true;
     // update state
     this.setState({
       activePlayer: updatedActivePlayer,
