@@ -17,6 +17,11 @@ class Arena extends Component{
         name:'robot1',
         human: false,
         letters: '',
+      },
+      {
+        name:'robot2',
+        human: false,
+        letters: '',
       }
     ],
     activePlayer: {
@@ -34,7 +39,7 @@ class Arena extends Component{
     if (!this.state.activePlayer.human){
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
-      setTimeout(this.robotGuess, 500)
+      setTimeout(this.robotGuess, 1500)
     }
   }
 
@@ -48,35 +53,34 @@ class Arena extends Component{
 
   guessHandler = () => {
     let guess = this.state.guess;
-    // if this is the first guess then skip the check and go right to update
-    if (this.state.trail.length === 0){
-      if (this.state.movie){
-        mdb.getMovie(guess)
-        .then(movie => {
-          mdb.getCast(movie.id)
-          .then(cast => {
-            this.updateAfterCorrectGuess(
-              movie.name,
-              movie.id,
-              cast,
-              movie.year
-            )
-          })
+    // if guessing a movie
+    if (this.state.movie){
+      mdb.getMovie(guess)
+      .then(movie => {
+        mdb.getCast(movie.id)
+        .then(cast => {
+          // if this is the first guess then check MDB to see if the guess is a
+          // real movie, but then proceed directly to update
+          if (this.state.trail.length === 0){
+            this.updateAfterCorrectGuess(movie.name,movie.id,cast,movie.year)
+          }
+          else{this.checkGuess(movie.name,movie.id,cast,movie.year)}
         })
-      }
-      // else check the answer
-      else{
-        mdb.getActor(guess)
-        .then(actor => this.updateAfterCorrectGuess(actor.name, actor.id))
-      }
-    }
-    // check MDB to see if the guess is a real movie
-    else if (this.state.movie){
-      mdb.searchMovie({query: guess}, (err, res) => {
-        return this.checkGuess(res.results[0])
       })
     }
-    else  {return this.checkGuess(guess)}
+    // if guessing an actor
+    else{
+      console.log("guessing an actor: ", guess)
+      mdb.getActor(guess)
+      .then(actor => {
+        if (this.state.trail.length === 0){
+          this.updateAfterCorrectGuess(actor.name, actor.id);
+        }
+        else{
+          console.log("checking the guess")
+          this.checkGuess(actor.name, actor.id)}
+      })
+    }
   }
 
   robotGuess = () => {
@@ -143,37 +147,50 @@ class Arena extends Component{
     }
   }
   // check human guess
-  checkGuess (response) {
+  checkGuess (name, id, cast, year) {
+    console.log("check guess invoked")
+    let trail = [...this.state.trail];
     // get the name of actor or movie
-    const name = this.state.movie ? response.title : response;
-    // check for uniqueness -- THIS NO LONGER WORKS BECAUSE WE"VE CHANGEd TRAIL STRUCTURE
-    if (this.state.trail.indexOf(name) === -1 && this.state.trail.length > 0 ){
-      // check for accuracy -- i.e. is this a movie the prev actor was in?
-      let lastEntry = this.state.trail[this.state.trail.length - 1].name;
-      // if we're submitting a movie we need to check if the previous
-      // actor is in that movie
-      if (this.state.movie){
-        // get the cast and see if lastEntry is in it
-        mdb.movieCredits({id: response.id}, (err, res) => {
-          let cast = res.cast.map(elem => ({name: elem.name.toLowerCase(), id: elem.id}));
-          // create another array to check through
-          let castNames = res.cast.map(elem => (elem.name.toLowerCase()));
-          if (castNames.indexOf(lastEntry.toLowerCase()) !== -1){
-            console.log("CORRECT ANSWER",name)
-            return this.updateAfterCorrectGuess(name, response.id, cast, response.release_date.slice(0,4));
-          }
-          else{
-            console.log("incorrectAnswer")
-          }
-        })
-        return;
+    // check for uniqueness -- THIS NO LONGER WORKS BECAUSE WE'VE CHANGEd TRAIL STRUCTURE
+    trail.forEach((item) => {
+      if (item.name === name){
+        this.updateAfterWrongGuess("duplicate")
       }
-      // if we're submitting an actor we can check state.previousCast
-      if (this.state.previousCast.indexOf(name.toLowerCase()) !== -1){
-
-        return this.updateAfterCorrectGuess(name)
+    })
+    // check for accuracy -- e.g. is this a movie the prev actor was in?
+    let lastEntry = trail[trail.length - 1].name;
+    // if we're submitting a movie we need to check if the previous
+    // actor is in that movie
+    if (this.state.movie){
+      // get the cast and see if lastEntry is in it
+      mdb.getCast(id)
+      .then(cast => {
+        // create another array to check through
+        let castNames = cast.map(elem => (elem.name.toLowerCase()));
+        if (castNames.indexOf(lastEntry.toLowerCase()) !== -1){
+          console.log("CORRECT ANSWER",name)
+          return this.updateAfterCorrectGuess(name, id, cast, year);
+        }
+        else{
+          console.log("incorrectAnswer")
+          this.updateAfterWrongGuess("incorrectMovie")
+        }
+      })
+    }
+    // if we're submitting an actor we can check state.previousCast
+    else{
+      console.log("we're chhecking an actor")
+      let previousCast = [...this.state.previousCast]
+      let duplicate = false;
+      previousCast.forEach(actor => {
+        if (actor.name === name){
+          duplicate = true;
+        }
+      })
+      if (!duplicate){
+        return this.updateAfterCorrectGuess(name, id)
       }
-      console.log("incorrect answer")
+      else{ this.updateAfterWrongGuess("incorrectActor")}
     }
   }
 

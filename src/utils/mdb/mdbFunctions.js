@@ -36,10 +36,11 @@ export default {
     return new Promise((resolve, reject) => {
       mdb.searchPerson({query: actor}, (err, res) => {
         if (err){
+          console.log("error getting actor")
           reject(err)
           return;
         }
-        console.log("RES>ID ",res.results[0].id)
+        console.log("no err")
         resolve({
           name: res.results[0].name,
           id: res.results[0].id
