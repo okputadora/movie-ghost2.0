@@ -64,11 +64,16 @@ class Arena extends Component{
     if (!this.state.movie){
       // go through previousCast and find one not played yet
       let duplicate;
-      for (let i = 0; i < this.state.previousCast.length; i++){
-        let actor = this.state.previousCast[i];
+      let actor;
+      let id;
+      let previousCast = [...this.state.previousCast]
+      for (let i = 0; i < previousCast.length; i++){
+        actor = previousCast[i].name;
+        id = previousCast[i].id;
         duplicate = false;
-        for (let x = 0; x < this.state.trail.length; x++){
-          let prevEntry = this.state.trail[x].name;
+        let trail = [...this.state.trail]
+        for (let x = 0; x < trail.length; x++){
+          let prevEntry = trail[x].name;
           console.log(actor, prevEntry)
           if (actor.toLowerCase() === prevEntry.toLowerCase()){
             duplicate = true
@@ -77,7 +82,7 @@ class Arena extends Component{
         }
         if (!duplicate){
           console.log(actor)
-          this.updateAfterCorrectGuess(actor)
+          this.updateAfterCorrectGuess(actor, id)
           break;
         }
       }
@@ -128,10 +133,12 @@ class Arena extends Component{
         console.log(response.id)
         // get the cast and see if lastEntry is in it
         mdb.movieCredits({id: response.id}, (err, res) => {
-          let cast = res.cast.map(elem => elem.name.toLowerCase())
-          if (cast.indexOf(lastEntry.toLowerCase()) !== -1){
+          let cast = res.cast.map(elem => ({name: elem.name.toLowerCase(), id: elem.id}));
+          // create another array to check through
+          let castNames = res.cast.map(elem => (elem.name.toLowerCase()));
+          if (castNames.indexOf(lastEntry.toLowerCase()) !== -1){
             console.log("CORRECT ANSWER",name)
-            return this.updateAfterCorrectGuess(name, cast, response.release_date.slice(0,4), response.id);
+            return this.updateAfterCorrectGuess(name, response.id, cast, response.release_date.slice(0,4));
           }
           else{
             console.log("incorrectAnswer")
@@ -141,6 +148,7 @@ class Arena extends Component{
       }
       // if we're submitting an actor we can check state.previousCast
       if (this.state.previousCast.indexOf(name.toLowerCase()) !== -1){
+
         return this.updateAfterCorrectGuess(name)
       }
       console.log("incorrect answer")
@@ -149,18 +157,26 @@ class Arena extends Component{
 
   getImage(id){
     return new Promise((resolve, reject) => {
+      let baseUrl =  'http://image.tmdb.org/t/p/w185//'
       if (this.state.movie){
         mdb.movieImages({id: id}, (err, res) => {
           console.log(res)
-          let baseUrl =  'http://image.tmdb.org/t/p/w185//'
-          let image = baseUrl + res.posters[0].file_path
+          let image = baseUrl + res.posters[0].file_path;
+          resolve(image);
+        })
+      }
+      else{
+        mdb.personImages({id: id}, (err, res) => {
+          console.log("made it to the image!")
+          console.log(res)
+          let image = baseUrl + res.profiles[0].file_path;
           resolve(image)
         })
       }
     })
   }
 
-  updateAfterCorrectGuess(name, cast, year, id){
+  updateAfterCorrectGuess(name, id, cast, year){
     // get the image
     this.getImage(id)
     .then(image => {
