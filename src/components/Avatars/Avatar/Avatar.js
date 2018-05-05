@@ -11,7 +11,7 @@ const avatar = (props) => {
   return (
     <div className={classes.Avatar}>
       <img className={imgClass} src={blankAvatar} alt={props.name}/>
-      <div>{props.name}</div>
+      <div className={classes.AvName}>{props.name}</div>
     </div>
   )
 }

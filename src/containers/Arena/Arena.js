@@ -70,14 +70,12 @@ class Arena extends Component{
     }
     // if guessing an actor
     else{
-      console.log("guessing an actor: ", guess)
       mdb.getActor(guess)
       .then(actor => {
         if (this.state.trail.length === 0){
           this.updateAfterCorrectGuess(actor.name, actor.id);
         }
         else{
-          console.log("checking the guess")
           this.checkGuess(actor.name, actor.id)}
       })
     }
@@ -99,14 +97,12 @@ class Arena extends Component{
         // check against actors and movies already played
         for (let x = 0; x < trail.length; x++){
           let prevEntry = trail[x].name;
-          console.log(actor, prevEntry)
           if (actor.toLowerCase() === prevEntry.toLowerCase()){
-            duplicate = true
+            duplicate = true;
             break;
           }
         }
         if (!duplicate){
-          console.log(actor)
           this.updateAfterCorrectGuess(actor, id)
           break;
         }
@@ -117,7 +113,7 @@ class Arena extends Component{
     else{
       let trail = [...this.state.trail];
       // grab the actor we're trying to match the movie to
-      let prevEntry = trail[trail.length - 1].name;
+      let prevEntry = trail[0].name;
       mdb.getMoviesFromActor(prevEntry)
       .then(possibleMovies => {
         // check these movies against the trail
@@ -148,7 +144,6 @@ class Arena extends Component{
   }
   // check human guess
   checkGuess (name, id, cast, year) {
-    console.log("check guess invoked")
     let trail = [...this.state.trail];
     // get the name of actor or movie
     // check for uniqueness -- THIS NO LONGER WORKS BECAUSE WE'VE CHANGEd TRAIL STRUCTURE
@@ -158,7 +153,7 @@ class Arena extends Component{
       }
     })
     // check for accuracy -- e.g. is this a movie the prev actor was in?
-    let lastEntry = trail[trail.length - 1].name;
+    let lastEntry = trail[0].name;
     // if we're submitting a movie we need to check if the previous
     // actor is in that movie
     if (this.state.movie){
@@ -168,18 +163,15 @@ class Arena extends Component{
         // create another array to check through
         let castNames = cast.map(elem => (elem.name.toLowerCase()));
         if (castNames.indexOf(lastEntry.toLowerCase()) !== -1){
-          console.log("CORRECT ANSWER",name)
           return this.updateAfterCorrectGuess(name, id, cast, year);
         }
         else{
-          console.log("incorrectAnswer")
           this.updateAfterWrongGuess("incorrectMovie")
         }
       })
     }
     // if we're submitting an actor we can check state.previousCast
     else{
-      console.log("we're chhecking an actor")
       let previousCast = [...this.state.previousCast]
       let duplicate = false;
       previousCast.forEach(actor => {
@@ -196,10 +188,8 @@ class Arena extends Component{
 
   updateAfterCorrectGuess(name, id, cast, year){
     // get the image
-    console.log("ID: ", id)
     mdb.getImage(id, this.state.movie)
     .then(image => {
-      console.log("IMAGE", image)
       // update the trail
       let updatedTrail = [...this.state.trail];
       let newEntry = {
@@ -207,7 +197,7 @@ class Arena extends Component{
         year: year,
         image: image,
       }
-      updatedTrail.push(newEntry)
+      updatedTrail.unshift(newEntry)
       // update the current player
       let players = this.state.players.map(player => (player.name));
       let activeIndex = players.indexOf(this.state.activePlayer.name) + 1;
@@ -233,7 +223,7 @@ class Arena extends Component{
     return (
       <div className = {classes.Arena}>
         <Instruction
-          lastEntry = {this.state.trail[this.state.trail.length - 1]}
+          lastEntry = {this.state.trail[0]}
           activePlayer = {this.state.activePlayer.name}
           acceptingMovie = {this.state.movie}
         />

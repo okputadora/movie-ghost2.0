@@ -36,11 +36,9 @@ export default {
     return new Promise((resolve, reject) => {
       mdb.searchPerson({query: actor}, (err, res) => {
         if (err){
-          console.log("error getting actor")
           reject(err)
           return;
         }
-        console.log("no err")
         resolve({
           name: res.results[0].name,
           id: res.results[0].id
@@ -67,14 +65,12 @@ export default {
       let baseUrl =  'http://image.tmdb.org/t/p/w185//'
       if (fetchingMovie){
         mdb.movieImages({id: id}, (err, res) => {
-          console.log(res)
           let image = baseUrl + res.posters[0].file_path;
           resolve(image);
         })
       }
       else{
         mdb.personImages({id: id}, (err, res) => {
-          console.log(res)
           let image = baseUrl + res.profiles[0].file_path;
           resolve(image)
         })
