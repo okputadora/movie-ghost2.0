@@ -4,9 +4,7 @@ import classes from './Arena.css';
 import Instruction from '../../components/Instruction/Instruction';
 import Submission from '../../components/Submission/Submission'
 import Trail from '../../components/Trail/Trail'
-const API_KEY = process.env.REACT_APP_MDB_KEY;
-const mdb = require('moviedb')(API_KEY)
-
+import mdb from '../../utils/mdb/mdbFunctions'
 class Arena extends Component{
   state = {
     players: [
@@ -27,7 +25,7 @@ class Arena extends Component{
     },
     movie: true, //boolean for whether the user should be entering a move (false = enter actor)
     previousCast: [],
-    trail: [{name: 'tom hanks', year: null, img:null}],
+    trail: [],
     guess: '',
   }
 
@@ -36,7 +34,7 @@ class Arena extends Component{
     if (!this.state.activePlayer.human){
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
-      setTimeout(this.robotGuess, 1000)
+      setTimeout(this.robotGuess, 500)
     }
   }
 
@@ -50,13 +48,35 @@ class Arena extends Component{
 
   guessHandler = () => {
     let guess = this.state.guess;
+    // if this is the first guess then skip the check and go right to update
+    if (this.state.trail.length === 0){
+      if (this.state.movie){
+        mdb.getMovie(guess)
+        .then(movie => {
+          mdb.getCast(movie.id)
+          .then(cast => {
+            this.updateAfterCorrectGuess(
+              movie.name,
+              movie.id,
+              cast,
+              movie.year
+            )
+          })
+        })
+      }
+      // else check the answer
+      else{
+        mdb.getActor(guess)
+        .then(actor => this.updateAfterCorrectGuess(actor.name, actor.id))
+      }
+    }
     // check MDB to see if the guess is a real movie
-    if (this.state.movie){
+    else if (this.state.movie){
       mdb.searchMovie({query: guess}, (err, res) => {
         return this.checkGuess(res.results[0])
       })
     }
-    else {return this.checkGuess(guess)}
+    else  {return this.checkGuess(guess)}
   }
 
   robotGuess = () => {
@@ -72,6 +92,7 @@ class Arena extends Component{
         id = previousCast[i].id;
         duplicate = false;
         let trail = [...this.state.trail]
+        // check against actors and movies already played
         for (let x = 0; x < trail.length; x++){
           let prevEntry = trail[x].name;
           console.log(actor, prevEntry)
@@ -90,28 +111,30 @@ class Arena extends Component{
     }
     // if the robot is picking a movie
     else{
-      let prevEntry = this.state.trail[this.state.trail.length - 1].name
-      mdb.searchPerson({query: prevEntry}, (err, res) => {
-        let possibleMovies = res.results[0].known_for;
-        // go through the possible movies and find a unique one
-        // THIS IS THE SAME AS THE FOR LOOPS ABOVE
-        // CONSIDER MAKING ITW OWN FUNCTION
+      let trail = [...this.state.trail];
+      // grab the actor we're trying to match the movie to
+      let prevEntry = trail[trail.length - 1].name;
+      mdb.getMoviesFromActor(prevEntry)
+      .then(possibleMovies => {
+        // check these movies against the trail
         let duplicate;
         for (let i = 0; i < possibleMovies.length; i++){
           let title = possibleMovies[i].title.toLowerCase();
           duplicate = false;
-          for (let x = 0; x < this.state.trail.length; x++){
-            let prevEntry = this.state.trail[x].name.toLowerCase();
+          for (let x = 0; x < trail.length; x++){
+            let prevEntry = trail[x].name.toLowerCase();
             if (prevEntry === title){
               duplicate = true;
               break;
             }
           }
+          // if we found one grab the cast of this movie
           if (!duplicate){
             // get the cast for this movie
-            mdb.movieCredits({id: possibleMovies[i].id}, (err, res) => {
-              let cast = res.cast.map(elem => elem.name.toLowerCase())
-              this.updateAfterCorrectGuess(title, cast, possibleMovies[i].release_date.slice(0,4))
+            let foundMovie = possibleMovies[i]
+            mdb.getCast(possibleMovies[i].id)
+            .then(cast => {
+              this.updateAfterCorrectGuess(foundMovie.title, foundMovie.id, cast, foundMovie.release_date.slice(0,4))
             })
             break;
           }
@@ -123,14 +146,13 @@ class Arena extends Component{
   checkGuess (response) {
     // get the name of actor or movie
     const name = this.state.movie ? response.title : response;
-    // check for uniqueness
+    // check for uniqueness -- THIS NO LONGER WORKS BECAUSE WE"VE CHANGEd TRAIL STRUCTURE
     if (this.state.trail.indexOf(name) === -1 && this.state.trail.length > 0 ){
       // check for accuracy -- i.e. is this a movie the prev actor was in?
       let lastEntry = this.state.trail[this.state.trail.length - 1].name;
       // if we're submitting a movie we need to check if the previous
       // actor is in that movie
       if (this.state.movie){
-        console.log(response.id)
         // get the cast and see if lastEntry is in it
         mdb.movieCredits({id: response.id}, (err, res) => {
           let cast = res.cast.map(elem => ({name: elem.name.toLowerCase(), id: elem.id}));
@@ -155,30 +177,10 @@ class Arena extends Component{
     }
   }
 
-  getImage(id){
-    return new Promise((resolve, reject) => {
-      let baseUrl =  'http://image.tmdb.org/t/p/w185//'
-      if (this.state.movie){
-        mdb.movieImages({id: id}, (err, res) => {
-          console.log(res)
-          let image = baseUrl + res.posters[0].file_path;
-          resolve(image);
-        })
-      }
-      else{
-        mdb.personImages({id: id}, (err, res) => {
-          console.log("made it to the image!")
-          console.log(res)
-          let image = baseUrl + res.profiles[0].file_path;
-          resolve(image)
-        })
-      }
-    })
-  }
-
   updateAfterCorrectGuess(name, id, cast, year){
     // get the image
-    this.getImage(id)
+    console.log("ID: ", id)
+    mdb.getImage(id, this.state.movie)
     .then(image => {
       console.log("IMAGE", image)
       // update the trail
