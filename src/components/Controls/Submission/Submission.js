@@ -7,7 +7,7 @@ const submission = (props) => {
   if (props.humanPlayer){
     return (
       <div className={classes.Submission}>
-        <TextInput changed={props.guessListener}/>
+        <TextInput guess={props.guess} changed={props.guessListener}/>
         <Button clicked={props.guessed}>Enter</Button>
       </div>
     )

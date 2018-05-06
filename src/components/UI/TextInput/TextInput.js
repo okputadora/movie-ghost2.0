@@ -5,6 +5,7 @@ const textInput = (props) => (
   <input
     onChange={props.changed}
     type="text"
+    value={props.guess}
     className={classes.TextInput}
   />
 )

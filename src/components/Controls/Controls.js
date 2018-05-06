@@ -10,6 +10,7 @@ const controls = (props) => {
         humanPlayer={props.humanPlayer}
         guessListener={props.guessListener}
         guessed={props.guessed}
+        guess={props.guess}
       />
       <Avatars active={props.active} players={props.players}/>
     </div>

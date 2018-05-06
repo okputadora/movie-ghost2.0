@@ -259,7 +259,7 @@ class Arena extends Component{
         <Modal show={this.state.wrongAnswer.show} closeModal={this.closeModal}>
           <div>{this.state.wrongAnswer.reason}</div>
           <div>You have: <span>{this.state.players[0].letters}</span></div>
-          </Modal>
+        </Modal>
         <div className = {classes.Arena}>
           <Instruction
             lastEntry = {this.state.trail[0]}
@@ -273,6 +273,7 @@ class Arena extends Component{
             guessed = {this.guessHandler}
             players = {this.state.players}
             active = {this.state.activePlayer}
+            guess = {this.state.guess}
           />
         </div>
       </Aux>

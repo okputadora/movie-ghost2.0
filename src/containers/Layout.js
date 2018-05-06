@@ -32,8 +32,8 @@ class Layout extends Component{
         <main className={classes.Content}>
           <Route path="/" exact component={WelcomePage} />
           <Route path="/instructions" component={Instructions} />
-          <Route path='/play' component={Arena} />
-            </main>
+          <Route path='/newGame' component={Arena} />
+        </main>
       </div>
     )
   }
