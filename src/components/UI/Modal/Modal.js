@@ -3,11 +3,13 @@ import classes from './Modal.css'
 import Aux from '../../../hoc/Auxil'
 import Backdrop from '../Backdrop/Backdrop'
 
-const modal = (props) => (
+const modal = (props) => {
+  console.log(props)
+  return (
   <Aux>
     <Backdrop
       show={props.show}
-      clicked={props.modalClosed}
+      clicked={props.closeModal}
     />
     <div
       className={classes.Modal}
@@ -18,6 +20,7 @@ const modal = (props) => (
     >
       {props.children}
     </div>
-  </Aux>
-)
+  </Aux>)
+}
+
 export default modal;

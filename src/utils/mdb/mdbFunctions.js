@@ -20,7 +20,7 @@ export default {
             year: res.results[0].release_date.slice(0,4)
           })
         }
-        else {reject("that's not a movie")}
+        else {reject("That's not a movie")}
       })
     })
   },
@@ -48,7 +48,7 @@ export default {
             id: res.results[0].id
           })
         }
-        else{reject("that's not an actor")}
+        else{reject("That's not an actor")}
       })
     })
   },

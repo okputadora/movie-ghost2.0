@@ -3,7 +3,7 @@ import classes from './Arena.css';
 import Instruction from '../../components/Instruction/Instruction';
 import Controls from '../../components/Controls/Controls';
 import Trail from '../../components/Trail/Trail';
-import Aux from '../../hoc/Auxil;';
+import Aux from '../../hoc/Auxil';
 import Modal from '../../components/UI/Modal/Modal';
 import mdb from '../../utils/mdb/mdbFunctions';
 class Arena extends Component{
@@ -54,25 +54,26 @@ class Arena extends Component{
   }
 
   guessHandler = () => {
-    let guess = this.state.guess;
-    // if guessing a movie
-    if (this.state.movie){
-      mdb.getMovie(guess)
-      .then(movie => {
-        mdb.getCast(movie.id)
-        .then(cast => {
-          // if this is the first guess then check MDB to see if the guess is a
-          // real movie, but then proceed directly to update
-          if (this.state.trail.length === 0){
-            this.updateAfterCorrectGuess(movie.name,movie.id,cast,movie.year)
-          }
-          else{this.checkGuess(movie.name,movie.id,cast,movie.year)}
+    if (this.state.guess.length > 0){
+      let guess = this.state.guess;
+      // if guessing a movie
+      if (this.state.movie){
+        mdb.getMovie(guess)
+        .then(movie => {
+          mdb.getCast(movie.id)
+          .then(cast => {
+            // if this is the first guess then check MDB to see if the guess is a
+            // real movie, but then proceed directly to update
+            if (this.state.trail.length === 0){
+              this.updateAfterCorrectGuess(movie.name,movie.id,cast,movie.year)
+            }
+            else{this.checkGuess(movie.name,movie.id,cast,movie.year)}
+          })
         })
-      })
-      .catch((err) => this.updateAfterWrongGuess(err))
-    }
-    // if guessing an actor
-    else{
+        .catch((err) => this.updateAfterWrongGuess(err))
+      }
+      // if guessing an actor
+      else{
       mdb.getActor(guess)
       .then(actor => {
         if (this.state.trail.length === 0){
@@ -84,13 +85,18 @@ class Arena extends Component{
       })
       .catch((err) => this.updateAfterWrongGuess(err))
     }
+    }
   }
-  modalClosed = () => {
+  closeModal = () => {
+    console.log("closing modal")
     this.setState({
       wrongAnswer: {
         show: false,
         reason: ''
-      }
+      },
+      trail: [],
+      guess: '',
+      movie: true
     })
   }
   robotGuess = () => {
@@ -178,7 +184,7 @@ class Arena extends Component{
           return this.updateAfterCorrectGuess(name, id, cast, year);
         }
         else{
-          this.updateAfterWrongGuess(lastEntry + " is'nt in " + name)
+          this.updateAfterWrongGuess(lastEntry + " isn't in " + name)
         }
       })
     }
@@ -197,7 +203,7 @@ class Arena extends Component{
         return this.updateAfterCorrectGuess(name, id)
       }
       else{
-        this.updateAfterWrongGuess("That actor isn't in " + lastEntry)}
+        this.updateAfterWrongGuess(name + " isn't in " + lastEntry)}
     }
   }
 
@@ -235,7 +241,8 @@ class Arena extends Component{
     let ghost = "GHOST".split("");
     let updatedPlayers = [...this.state.players];
     let letters = updatedPlayers[0].letters;
-    letters.append(ghost[letters.length])
+    console.log("letter: ", letters)
+    letters.push(ghost[letters.length])
     console.log("Letters: ",letters)
     updatedPlayers[0].letters = letters
     this.setState({
@@ -243,15 +250,15 @@ class Arena extends Component{
         show: true,
         reason: reason
       },
-      players: updatedPlayers
+      players: updatedPlayers,
     })
   }
   render(){
     return (
       <Aux>
-        <Modal show={this.state.wrongAnswer.show} modalClosed={this.closeModal}>
+        <Modal show={this.state.wrongAnswer.show} closeModal={this.closeModal}>
           <div>{this.state.wrongAnswer.reason}</div>
-          <div>{this.state.players[0].letters}</div>
+          <div>You have: <span>{this.state.players[0].letters}</span></div>
           </Modal>
         <div className = {classes.Arena}>
           <Instruction

@@ -1,7 +1,7 @@
 .Trail {
   box-sizing: content-box;
   display: flex;
-  margin-bottom: 170px;
+  padding-bottom: 170px;
   flex-wrap: wrap;
   margin-top: 5px;
   width: 100%;
@@ -14,6 +14,6 @@
 
 @media (min-width: 500px){
   .Trail {
-    margin-bottom: 290px;
+    padding-bottom: 290px;
   }
 }
