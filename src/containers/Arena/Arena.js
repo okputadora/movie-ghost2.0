@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 import classes from './Arena.css';
 import Instruction from '../../components/Instruction/Instruction';
-import Controls from '../../components/Controls/Controls'
-import Trail from '../../components/Trail/Trail'
-import mdb from '../../utils/mdb/mdbFunctions'
+import Controls from '../../components/Controls/Controls';
+import Trail from '../../components/Trail/Trail';
+import Aux from '../../hoc/Auxil;';
+import Modal from '../../components/UI/Modal/Modal';
+import mdb from '../../utils/mdb/mdbFunctions';
 class Arena extends Component{
   state = {
     players: [
       {
         name: 'mike',
         human: true,
-        letters: '',
+        letters: [],
       },
       {
         name:'robot1',
         human: false,
-        letters: '',
+        letters: [],
       },
       {
         name:'robot2',
         human: false,
-        letters: '',
+        letters: [],
       }
     ],
     activePlayer: {
@@ -31,6 +33,7 @@ class Arena extends Component{
     previousCast: [],
     trail: [],
     guess: '',
+    wrongAnswer: {}
   }
 
   componentDidUpdate(){
@@ -82,7 +85,14 @@ class Arena extends Component{
       .catch((err) => this.updateAfterWrongGuess(err))
     }
   }
-
+  modalClosed = () => {
+    this.setState({
+      wrongAnswer: {
+        show: false,
+        reason: ''
+      }
+    })
+  }
   robotGuess = () => {
     // if the robots picking an actor
     if (!this.state.movie){
@@ -222,25 +232,43 @@ class Arena extends Component{
   }
 
   updateAfterWrongGuess(reason){
-
+    let ghost = "GHOST".split("");
+    let updatedPlayers = [...this.state.players];
+    let letters = updatedPlayers[0].letters;
+    letters.append(ghost[letters.length])
+    console.log("Letters: ",letters)
+    updatedPlayers[0].letters = letters
+    this.setState({
+      wrongAnswer: {
+        show: true,
+        reason: reason
+      },
+      players: updatedPlayers
+    })
   }
   render(){
     return (
-      <div className = {classes.Arena}>
-        <Instruction
-          lastEntry = {this.state.trail[0]}
-          activePlayer = {this.state.activePlayer.name}
-          acceptingMovie = {this.state.movie}
-        />
-        <Trail trail = {this.state.trail}/>
-        <Controls
-          humanPlayer = {this.state.activePlayer.human}
-          guessListener = {this.updateGuess}
-          guessed = {this.guessHandler}
-          players = {this.state.players}
-          active = {this.state.activePlayer}
-        />
-      </div>
+      <Aux>
+        <Modal show={this.state.wrongAnswer.show} modalClosed={this.closeModal}>
+          <div>{this.state.wrongAnswer.reason}</div>
+          <div>{this.state.players[0].letters}</div>
+          </Modal>
+        <div className = {classes.Arena}>
+          <Instruction
+            lastEntry = {this.state.trail[0]}
+            activePlayer = {this.state.activePlayer.name}
+            acceptingMovie = {this.state.movie}
+          />
+          <Trail trail = {this.state.trail}/>
+          <Controls
+            humanPlayer = {this.state.activePlayer.human}
+            guessListener = {this.updateGuess}
+            guessed = {this.guessHandler}
+            players = {this.state.players}
+            active = {this.state.activePlayer}
+          />
+        </div>
+      </Aux>
     )
   }
 }
