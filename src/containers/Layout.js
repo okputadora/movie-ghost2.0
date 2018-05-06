@@ -21,6 +21,7 @@ class Layout extends Component{
     console.log("clicked")
     this.setState({showSideDrawer: true})
   }
+
   render () {
     return (
       <div className={classes.Layout}>
@@ -30,9 +31,8 @@ class Layout extends Component{
         />
         <Navbar opened={this.sideDrawerOpenedHandler}/>
         <main className={classes.Content}>
-          <Route path="/" exact component={WelcomePage} />
-          <Route path="/instructions" component={Instructions} />
-          <Route path='/newGame' component={Arena} />
+          <Route path='/' component={Arena} />
+          <Route path="/instructions" component={Instructions}/>
         </main>
       </div>
     )

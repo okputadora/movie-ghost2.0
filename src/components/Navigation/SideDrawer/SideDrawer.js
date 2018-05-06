@@ -15,7 +15,7 @@ const sideDrawer = (props) => {
       <div className={attachedClasses.join(" ")}>
         <nav>
           <NavigationItem link='/newGame' mobileMenu>New Game</NavigationItem>
-          <NavigationItem link='/instruction' mobileMenu>How to Play</NavigationItem>
+          <NavigationItem link='/instructions' mobileMenu>How to Play</NavigationItem>
           <NavigationItem mobileMenu>Leaderboard</NavigationItem>
         </nav>
       </div>

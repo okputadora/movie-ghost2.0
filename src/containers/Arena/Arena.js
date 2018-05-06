@@ -1,49 +1,77 @@
 import React, { Component } from 'react';
 import classes from './Arena.css';
+import welcomeClasses from './Welcome.css'
 import Instruction from '../../components/Instruction/Instruction';
 import Controls from '../../components/Controls/Controls';
 import Trail from '../../components/Trail/Trail';
 import Aux from '../../hoc/Auxil';
 import Modal from '../../components/UI/Modal/Modal';
+import divider from '../../assets/divider.png';
+import TextInput from '../../components/UI/TextInput/TextInput';
+import Button from '../../components/UI/Button/Button';
 import mdb from '../../utils/mdb/mdbFunctions';
 class Arena extends Component{
   state = {
-    players: [
-      {
-        name: 'mike',
-        human: true,
-        letters: [],
-      },
-      {
-        name:'robot1',
-        human: false,
-        letters: [],
-      },
-      {
-        name:'robot2',
-        human: false,
-        letters: [],
-      }
-    ],
-    activePlayer: {
-      name: 'mike',
-      human: true,
-    },
-    movie: true, //boolean for whether the user should be entering a move (false = enter actor)
+    gameSettings: true,
+    players: [],
+    activePlayer: {},
+    movie: true, //boolean for whether the user should be entering a movie (false = enter actor)
     previousCast: [],
     trail: [],
     guess: '',
+    username: '',
+    oppNo: 0,
     wrongAnswer: {}
   }
 
   componentDidUpdate(){
     // if its a robots turn
-    if (!this.state.activePlayer.human){
+    if (!this.state.activePlayer.human && this.state.gameSettings === false){
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
       setTimeout(this.robotGuess, 1000)
     }
   }
+
+  updateUsername = (event) => {
+    this.setState({
+      username: event.target.value
+    })
+  }
+
+  updateOppNo = (event) => {
+    console.log("we good")
+    this.setState({
+      oppNo: event.target.innerHTML
+    })
+  }
+
+  submitSettings = (settings) => {
+    console.log("CLICKED!")
+    let opponent = {
+      name: 'Robot 1',
+      human: false,
+      letters: []
+    }
+    let updatedPlayers = [opponent];
+    if (this.state.oppNo === "2"){
+      let newOpponent = Object.assign({}, opponent)
+      newOpponent.name = 'Robot 2'
+      updatedPlayers.push(newOpponent)
+    }
+    updatedPlayers.unshift({
+      name: this.state.username,
+      human: true,
+      letters: []
+    })
+    console.log("UpdatedPLayers: ", updatedPlayers)
+    this.setState({
+      gameSettings: false,
+      players: updatedPlayers,
+      activePlayer: updatedPlayers[0]
+    })
+  }
+
 
   updateGuess = (event) => {
     let currentGuess = this.state.guess;
@@ -254,27 +282,48 @@ class Arena extends Component{
     })
   }
   render(){
+    // highlight the modal game settings opp no.
+    let score = <div></div>;
+    let instruction;
+    let controls;
+    if (this.state.players[0]){
+      score = <div>You have: <span>{this.state.players[0].letters}</span></div>
+      controls = <Controls
+        humanPlayer = {this.state.activePlayer.human}
+        guessListener = {this.updateGuess}
+        guessed = {this.guessHandler}
+        players = {this.state.players}
+        active = {this.state.activePlayer}
+        guess = {this.state.guess}/>;
+      instruction = <Instruction
+        lastEntry = {this.state.trail[0]}
+        activePlayer = {this.state.activePlayer.name}
+        acceptingMovie = {this.state.movie}/>
+    }
     return (
       <Aux>
         <Modal show={this.state.wrongAnswer.show} closeModal={this.closeModal}>
           <div>{this.state.wrongAnswer.reason}</div>
-          <div>You have: <span>{this.state.players[0].letters}</span></div>
+          {score}
+        </Modal>
+        {/* This will eventually be its own page ... as soon as I implement redux */}
+        <Modal show={this.state.gameSettings}>
+          <div className={welcomeClasses.Title}>Start a new game</div>
+          <img src={divider} height="30px"/>
+          <div>Enter your name</div>
+          <TextInput changed={this.updateUsername}/>
+          <div className={welcomeClasses.Prompt}>Select number of opponents</div>
+          <div className={welcomeClasses.oppOptions}>
+            <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>1</div>
+            <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>2</div>
+          </div>
+          <Button clicked={this.submitSettings}>Play</Button>
+          <p className={welcomeClasses.Text}><em>we recommend playing against two opponents so that you can alternate guessing movies and actors</em></p>
         </Modal>
         <div className = {classes.Arena}>
-          <Instruction
-            lastEntry = {this.state.trail[0]}
-            activePlayer = {this.state.activePlayer.name}
-            acceptingMovie = {this.state.movie}
-          />
+          {instruction}
           <Trail trail = {this.state.trail}/>
-          <Controls
-            humanPlayer = {this.state.activePlayer.human}
-            guessListener = {this.updateGuess}
-            guessed = {this.guessHandler}
-            players = {this.state.players}
-            active = {this.state.activePlayer}
-            guess = {this.state.guess}
-          />
+          {controls}
         </div>
       </Aux>
     )
