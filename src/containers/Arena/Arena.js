@@ -300,6 +300,17 @@ class Arena extends Component{
         activePlayer = {this.state.activePlayer.name}
         acceptingMovie = {this.state.movie}/>
     }
+    let oppBtnActive = [welcomeClasses.Opt, welcomeClasses.Active].join(" ")
+    let oppButtons = <div className={welcomeClasses.oppOptions}>
+      <div onClick={this.updateOppNo} className={oppBtnActive}>1</div>
+      <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>2</div>
+    </div>
+    if (this.state.oppNo === "2"){
+      oppButtons = <div className={welcomeClasses.oppOptions}>
+        <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>1</div>
+        <div onClick={this.updateOppNo} className={oppBtnActive}>2</div>
+      </div>
+    }
     return (
       <Aux>
         <Modal show={this.state.wrongAnswer.show} closeModal={this.closeModal}>
@@ -313,10 +324,7 @@ class Arena extends Component{
           <div>Enter your name</div>
           <TextInput changed={this.updateUsername}/>
           <div className={welcomeClasses.Prompt}>Select number of opponents</div>
-          <div className={welcomeClasses.oppOptions}>
-            <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>1</div>
-            <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>2</div>
-          </div>
+          {oppButtons}
           <Button clicked={this.submitSettings}>Play</Button>
           <p className={welcomeClasses.Text}><em>we recommend playing against two opponents so that you can alternate guessing movies and actors</em></p>
         </Modal>
