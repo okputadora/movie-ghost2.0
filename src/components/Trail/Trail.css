@@ -1,10 +1,19 @@
 .Trail {
+  box-sizing: content-box;
   display: flex;
   margin-bottom: 170px;
   flex-wrap: wrap;
   margin-top: 5px;
-  padding: 5px;
+  width: 100%;
+  padding-right: 16px;
   align-items: flex-start;
   justify-content: center;
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+@media (min-width: 500px){
+  .Trail {
+    margin-bottom: 290px;
+  }
 }
