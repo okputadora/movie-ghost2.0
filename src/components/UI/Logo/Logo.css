@@ -1,4 +1,5 @@
-.Logo{
+.Logo a{
   font-size: 2.3em;
   color: white;
+  text-decoration: none;
 }

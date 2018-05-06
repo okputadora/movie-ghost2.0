@@ -7,7 +7,7 @@
   transition: .2s ease-out
 }
 .NavigationItem a{
-  color: white;
+  color: #a8a8a8;
   text-decoration: none;
 }
 
@@ -22,6 +22,7 @@
 
 .ShowOnMobile{
   display: block;
+  color: black;
 }
 
 .HideOnMobile {
@@ -37,6 +38,7 @@
   .HideOnMobile {
     display: block;
   }
+  .NavigationItem a{color: white;}
   .NavigationItem a:hover,
   .NavigationItem a.active {
     border-bottom: 2px solid white;
