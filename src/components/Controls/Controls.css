@@ -7,7 +7,7 @@
   border: 1px solid #ddd;
   width: 100%;
   z-index: 300;
-  box-shadow: 0px -20px 18px 2px white;
+  box-shadow: 0px -20px 20px  0px white;
 }
 
 @media (min-width: 500px) {
