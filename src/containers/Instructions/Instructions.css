@@ -1,0 +1,24 @@
+.Instructions {
+  position: fixed;
+  top: 110px;
+  width: 70%;
+  text-align: center;
+  left: 15%;
+}
+
+.Header{
+  font-size: 3.5em;
+  font-weight: lighter;
+  font-family: 'Tangerine', cursive;
+}
+
+.Text{
+  font-size: .8em;
+  font-family: 'Poppins', sans-serif;
+}
+
+@media (min-width: 500px) {
+  .Text {
+    text-align: left;
+  }
+}
