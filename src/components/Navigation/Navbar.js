@@ -1,10 +1,15 @@
 import React from 'react'
 import classes from './Navbar.css'
-
-const navBar = () => (
+import NavigationItem from './NavigationItem/NavigationItem'
+const navBar = (props) => (
   <nav className={classes.Navbar}>
-    <h1>MovieGhost</h1>
-    <div>Menu Options</div>
+    <NavigationItem logo>MovieGhost</NavigationItem>
+    <div className={classes.menuOptions}>
+      <NavigationItem mobileMenu clicked={props.opened}><i className="fas fa-bars"></i></NavigationItem>
+      <NavigationItem>New Game</NavigationItem>
+      <NavigationItem>How to Play</NavigationItem>
+      <NavigationItem>Leaderboard</NavigationItem>
+    </div>
   </nav>
 )
 

@@ -38,7 +38,7 @@ class Arena extends Component{
     if (!this.state.activePlayer.human){
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
-      setTimeout(this.robotGuess, 0)
+      setTimeout(this.robotGuess, 1700)
     }
   }
 

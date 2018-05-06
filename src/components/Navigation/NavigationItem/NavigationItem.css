@@ -1,0 +1,47 @@
+.NavigationItem {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 10px 10px;
+  cursor: pointer;
+  border-bottom: none;
+  transition: .2s ease-out
+}
+
+.NavigationItem a:hover,
+.NavigationItem a.active {
+  border-bottom: 2px solid black;
+}
+
+.Logo {
+  font-size: 30px;
+}
+
+.ShowOnMobile{
+  display: block;
+}
+
+.HideOnMobile {
+  display: none;
+}
+
+
+@media (min-width: 500px) {
+  .ShowOnMobile {
+    display: none;
+  }
+
+  .HideOnMobile {
+    display: block;
+  }
+  .NavigationItem a:hover,
+  .NavigationItem a.active {
+    border-bottom: 2px solid white;
+  }
+
+}
+
+@media (min-width: 700px) {
+  .NavigationItem {
+    padding: 10px 20px;
+  }
+}
