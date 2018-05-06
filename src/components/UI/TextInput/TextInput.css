@@ -1,5 +1,19 @@
 .TextInput {
   padding: 5px;
   color: #212121;
-  text-align: center;
+  border: none;
+  width: 95%;
+  max-width: 500px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.TextInput:focus {
+  outline: none;
+}
+
+@media (min-width: 500px) {
+  .TextInput {
+    font-size: 1.2em;
+  }
 }

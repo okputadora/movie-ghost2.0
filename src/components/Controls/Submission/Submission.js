@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Submission.css';
-import TextInput from '../UI/TextInput/TextInput';
-import Button from '../UI/Button/Button';
+import TextInput from '../../UI/TextInput/TextInput';
+import Button from '../../UI/Button/Button';
 
 const submission = (props) => {
   if (props.humanPlayer){

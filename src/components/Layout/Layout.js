@@ -18,12 +18,12 @@ class Layout extends Component{
   // }
   render () {
     return (
-      <Aux>
+      <div className={classes.Layout}>
         <Navbar />
         <main className={classes.Content}>
           {this.props.children}
         </main>
-      </Aux>
+      </div>
     )
   }
 };

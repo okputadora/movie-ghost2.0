@@ -13,11 +13,14 @@ export default {
           reject(err);
           return;
         }
-        resolve({
-          name: res.results[0].title,
-          id: res.results[0].id,
-          year: res.results[0].release_date.slice(0,4)
-        })
+        if (res.results.length > 0) {
+          resolve({
+            name: res.results[0].title,
+            id: res.results[0].id,
+            year: res.results[0].release_date.slice(0,4)
+          })
+        }
+        else {reject("that's not a movie")}
       })
     })
   },
@@ -39,10 +42,13 @@ export default {
           reject(err)
           return;
         }
-        resolve({
-          name: res.results[0].name,
-          id: res.results[0].id
-        })
+        if (res.results.length > 0) {
+          resolve({
+            name: res.results[0].name,
+            id: res.results[0].id
+          })
+        }
+        else{reject("that's not an actor")}
       })
     })
   },

@@ -5,6 +5,7 @@ const textInput = (props) => (
   <input
     onChange={props.changed}
     type="text"
-    className={classes.TextInput} />
+    className={classes.TextInput}
+  />
 )
 export default textInput

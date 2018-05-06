@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Avatars from '../../components/Avatars/Avatars';
 import classes from './Arena.css';
 import Instruction from '../../components/Instruction/Instruction';
-import Submission from '../../components/Submission/Submission'
+import Controls from '../../components/Controls/Controls'
 import Trail from '../../components/Trail/Trail'
 import mdb from '../../utils/mdb/mdbFunctions'
 class Arena extends Component{
@@ -39,7 +38,7 @@ class Arena extends Component{
     if (!this.state.activePlayer.human){
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
-      setTimeout(this.robotGuess, 1500)
+      setTimeout(this.robotGuess, 1770)
     }
   }
 
@@ -67,6 +66,7 @@ class Arena extends Component{
           else{this.checkGuess(movie.name,movie.id,cast,movie.year)}
         })
       })
+      .catch((err) => this.updateAfterWrongGuess(err))
     }
     // if guessing an actor
     else{
@@ -76,8 +76,10 @@ class Arena extends Component{
           this.updateAfterCorrectGuess(actor.name, actor.id);
         }
         else{
+          console.log("checking the actor")
           this.checkGuess(actor.name, actor.id)}
       })
+      .catch((err) => this.updateAfterWrongGuess(err))
     }
   }
 
@@ -166,23 +168,26 @@ class Arena extends Component{
           return this.updateAfterCorrectGuess(name, id, cast, year);
         }
         else{
-          this.updateAfterWrongGuess("incorrectMovie")
+          this.updateAfterWrongGuess(lastEntry + " is'nt in " + name)
         }
       })
     }
     // if we're submitting an actor we can check state.previousCast
     else{
+      console.log("HHHHHH CHECKING THE ACTOR")
       let previousCast = [...this.state.previousCast]
       let duplicate = false;
       previousCast.forEach(actor => {
-        if (actor.name === name){
+        // if we find a match, the guess is correct
+        if (actor.name === name.toLowerCase()){
           duplicate = true;
         }
       })
-      if (!duplicate){
+      if (duplicate){
         return this.updateAfterCorrectGuess(name, id)
       }
-      else{ this.updateAfterWrongGuess("incorrectActor")}
+      else{
+        this.updateAfterWrongGuess("That actor isn't in " + lastEntry)}
     }
   }
 
@@ -216,8 +221,8 @@ class Arena extends Component{
     })
   }
 
-  updateAfterWrongGuess(){
-
+  updateAfterWrongGuess(reason){
+    console.log(reason)
   }
   render(){
     return (
@@ -227,16 +232,14 @@ class Arena extends Component{
           activePlayer = {this.state.activePlayer.name}
           acceptingMovie = {this.state.movie}
         />
-        <Submission
+        <Trail trail = {this.state.trail}/>
+        <Controls
           humanPlayer = {this.state.activePlayer.human}
           guessListener = {this.updateGuess}
           guessed = {this.guessHandler}
-        />
-        <Avatars
           players = {this.state.players}
           active = {this.state.activePlayer}
         />
-        <Trail trail = {this.state.trail}/>
       </div>
     )
   }

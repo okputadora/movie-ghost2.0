@@ -1,7 +1,5 @@
 .Avatars {
-  margin-top: 9px;
   display: flex;
   justify-content: center;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  height: auto;
 }

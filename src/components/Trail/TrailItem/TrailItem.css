@@ -21,3 +21,13 @@
   text-align: center;
   padding: 2px;
 }
+
+@media (min-width: 500px){
+  .TrailItem{
+    max-width: 150px;
+    margin: 10px;
+  }
+  .Img{
+    height: 200px;
+  }
+}

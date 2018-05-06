@@ -2,5 +2,4 @@
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
-  min-height: 82vh;
 }
