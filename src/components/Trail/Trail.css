@@ -1,8 +1,10 @@
 .Trail {
   display: flex;
+  margin-bottom: 170px;
   flex-wrap: wrap;
   margin-top: 5px;
   padding: 5px;
   align-items: flex-start;
   justify-content: center;
+  overflow-y: scroll;
 }

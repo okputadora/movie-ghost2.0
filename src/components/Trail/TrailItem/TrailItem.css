@@ -22,6 +22,11 @@
   padding: 2px;
 }
 
+.ActiveItem {
+  outline-color: rgb(100,53,17);
+  box-shadow: 0 4px 5px 0 rgba(100,53,17,0.34), 0 1px 10px 0 rgba(100,53,17,0.32), 0 2px 4px -1px rgba(100,53,17,0.7);
+}
+
 @media (min-width: 500px){
   .TrailItem{
     max-width: 150px;
