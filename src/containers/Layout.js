@@ -1,7 +1,11 @@
-import React, { Component } from 'react'
-import classes from './Layout.css'
-import Navbar from '../Navigation/Navbar'
-import SideDrawer from '../Navigation/SideDrawer/SideDrawer'
+import React, { Component } from 'react';
+import classes from './Layout.css';
+import Navbar from '../components/Navigation/Navbar';
+import SideDrawer from '../components/Navigation/SideDrawer/SideDrawer';
+import Arena from './Arena/Arena'
+import WelcomePage from './WelcomePage/WelcomePage';
+import Instructions from './Instructions/Instructions';
+import { Route } from 'react-router';
 // for mobile only
 // import SideMenu from '../Navigation/SideMenu/SideMenu'
 // wrapper component -- we pass the children to the main section
@@ -26,8 +30,10 @@ class Layout extends Component{
         />
         <Navbar opened={this.sideDrawerOpenedHandler}/>
         <main className={classes.Content}>
-          {this.props.children}
-        </main>
+          <Route path="/" exact component={WelcomePage} />
+          <Route path="/instructions" component={Instructions} />
+          <Route path='/play' component={Arena} />
+            </main>
       </div>
     )
   }

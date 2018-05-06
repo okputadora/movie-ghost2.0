@@ -6,6 +6,10 @@
   border-bottom: none;
   transition: .2s ease-out
 }
+.NavigationItem a{
+  color: white;
+  text-decoration: none;
+}
 
 .NavigationItem a:hover,
 .NavigationItem a.active {

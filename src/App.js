@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import Layout from './components/Layout/Layout';
+import Layout from './containers/Layout';
 import Arena from './containers/Arena/Arena';
+import { BrowserRouter } from 'react-router-dom'
 require('dotenv').config();
 
 class App extends Component {
   render() {
     return (
-      <Layout>
-        <Arena />
-      </Layout>
+      <BrowserRouter>
+        <Layout />
+      </BrowserRouter>
     );
   }
 }
