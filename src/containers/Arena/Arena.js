@@ -20,10 +20,26 @@ class Arena extends Component{
     trail: [],
     guess: '',
     username: '',
-    oppNo: 0,
+    oppNo: "2",
     wrongAnswer: {}
   }
-
+  componentWillMount(){
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter'){
+        // handle differenct contexts of Enter clicks
+        if (this.state.gameSettings){
+          this.submitSettings();
+        }
+        // if theres a guess and the enter button isn't in focus
+        else if (this.state.guess.length > 1 && document.activeElement.innerHTML !== 'Enter'){
+          this.guessHandler()
+        }
+      }
+    })
+  }
+  componenetWillUnmount(){
+    document.removeEventListener('keydown', this.enterHandler);
+  }
   componentDidUpdate(){
     // if its a robots turn
     if (!this.state.activePlayer.human && this.state.gameSettings === false){
@@ -53,6 +69,7 @@ class Arena extends Component{
       human: false,
       letters: []
     }
+    console.log(this.state.oppNo)
     let updatedPlayers = [opponent];
     if (this.state.oppNo === "2"){
       let newOpponent = Object.assign({}, opponent)
@@ -279,6 +296,7 @@ class Arena extends Component{
         reason: reason
       },
       players: updatedPlayers,
+      guess: '',
     })
   }
   render(){
@@ -302,13 +320,13 @@ class Arena extends Component{
     }
     let oppBtnActive = [welcomeClasses.Opt, welcomeClasses.Active].join(" ")
     let oppButtons = <div className={welcomeClasses.oppOptions}>
-      <div onClick={this.updateOppNo} className={oppBtnActive}>1</div>
-      <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>2</div>
+      <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>1</div>
+      <div onClick={this.updateOppNo} className={oppBtnActive}>2</div>
     </div>
-    if (this.state.oppNo === "2"){
+    if (this.state.oppNo === "1"){
       oppButtons = <div className={welcomeClasses.oppOptions}>
-        <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>1</div>
-        <div onClick={this.updateOppNo} className={oppBtnActive}>2</div>
+        <div onClick={this.updateOppNo} className={oppBtnActive}>1</div>
+        <div onClick={this.updateOppNo} className={welcomeClasses.Opt}>2</div>
       </div>
     }
     return (
@@ -317,7 +335,7 @@ class Arena extends Component{
           <div>{this.state.wrongAnswer.reason}</div>
           {score}
         </Modal>
-        {/* This will eventually be its own page ... as soon as I implement redux */}
+        {/* This Modal below will eventually be its own page ... as soon as I implement redux */}
         <Modal show={this.state.gameSettings}>
           <div className={welcomeClasses.Title}>Start a new game</div>
           <img src={divider} height="30px"/>

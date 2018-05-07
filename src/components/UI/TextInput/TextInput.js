@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import classes from './TextInput.css';
 
-const textInput = (props) => (
-  <input
-    onChange={props.changed}
-    type="text"
-    value={props.guess}
-    className={classes.TextInput}
-  />
-)
-export default textInput
+class TextInput extends Component{
+  componentDidMount(){
+    this.textInput.focus()
+  }
+  render(){
+    return(
+      <input
+        ref={(input) => {this.textInput = input}}
+        onChange={this.props.changed}
+        type="text"
+        value={this.props.guess}
+        className={classes.TextInput}
+      />
+    )
+  }  
+}
+export default TextInput

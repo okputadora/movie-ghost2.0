@@ -4,6 +4,7 @@ import Submission from './Submission/Submission'
 import classes from './Controls.css'
 
 const controls = (props) => {
+  console.log(props.inputRef)
   return (
     <div className={classes.Controls}>
       <Submission

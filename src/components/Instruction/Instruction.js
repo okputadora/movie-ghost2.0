@@ -6,13 +6,13 @@ const instruction = (props) => {
   if (props.acceptingMovie){
     instruction = "Enter the name of a movie "
     if (props.lastEntry){
-      instruction += "with " + props.lastEntry.name;
+      instruction += "with " + props.lastEntry.name.toUpperCase();
     }
   }
   else{
     instruction = "Enter the name of an actor "
     if (props.lastEntry){
-      instruction += "in " + props.lastEntry.name;
+      instruction += "in " + props.lastEntry.name.toUpperCase();
     }
   }
   const turn = props.activePlayer + "'s turn";

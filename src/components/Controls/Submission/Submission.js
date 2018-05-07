@@ -8,7 +8,7 @@ const submission = (props) => {
     return (
       <div className={classes.Submission}>
         <TextInput guess={props.guess} changed={props.guessListener}/>
-        <Button clicked={props.guessed}>Enter</Button>
+        <Button id="enterGuess" clicked={props.guessed}>Enter</Button>
       </div>
     )
   }
