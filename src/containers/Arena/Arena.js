@@ -32,7 +32,11 @@ class Arena extends Component{
         }
         // if theres a guess and the enter button isn't in focus
         else if (this.state.guess.length > 1 && document.activeElement.innerHTML !== 'Enter'){
-          this.guessHandler()
+          this.guessHandler();
+        }
+        // if the modals open 'enter' should close it
+        else if (this.state.wrongAnswer.show) {
+          this.closeModal();
         }
       }
     })

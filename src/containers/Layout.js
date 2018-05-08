@@ -3,7 +3,6 @@ import classes from './Layout.css';
 import Navbar from '../components/Navigation/Navbar';
 import SideDrawer from '../components/Navigation/SideDrawer/SideDrawer';
 import Arena from './Arena/Arena'
-import WelcomePage from './WelcomePage/WelcomePage';
 import Instructions from './Instructions/Instructions';
 import { Route } from 'react-router';
 // for mobile only
@@ -31,8 +30,8 @@ class Layout extends Component{
         />
         <Navbar opened={this.sideDrawerOpenedHandler}/>
         <main className={classes.Content}>
-          <Route path='/' component={Arena} />
-          <Route path="/instructions" component={Instructions}/>
+          <Route path='/Play' exact component={Arena} />
+          <Route path="/" exact component={Instructions}/>
         </main>
       </div>
     )

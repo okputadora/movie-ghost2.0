@@ -12,6 +12,7 @@ const avatar = (props) => {
     <div className={classes.Avatar}>
       <img className={imgClass} src={blankAvatar} alt={props.name}/>
       <div className={classes.AvName}>{props.name}</div>
+      <div className={classes.AvName}>{props.letters}</div>
     </div>
   )
 }
