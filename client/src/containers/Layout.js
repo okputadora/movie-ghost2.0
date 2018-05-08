@@ -4,6 +4,7 @@ import Navbar from '../components/Navigation/Navbar';
 import SideDrawer from '../components/Navigation/SideDrawer/SideDrawer';
 import Arena from './Arena/Arena'
 import Instructions from './Instructions/Instructions';
+import api from '../utils/api/api'
 import { Route } from 'react-router';
 // for mobile only
 // import SideMenu from '../Navigation/SideMenu/SideMenu'
@@ -11,6 +12,9 @@ import { Route } from 'react-router';
 class Layout extends Component{
   state = {
     showSideDrawer: false,
+  }
+  componentDidMount(){
+    
   }
   sideDrawerClosedHandler = () => {
     this.setState({showSideDrawer: false})
@@ -20,6 +24,7 @@ class Layout extends Component{
     console.log("clicked")
     this.setState({showSideDrawer: true})
   }
+
 
   render () {
     return (
