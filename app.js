@@ -4,11 +4,23 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose')
 var index = require('./routes/index');
 var users = require('./routes/api');
+require('dotenv').config();
 
 var app = express();
+
+// setup session storage
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({mongooseConnection: mongoose.connection}),
+  cookie: {maxAge: 60 * 60 * 1000}
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
