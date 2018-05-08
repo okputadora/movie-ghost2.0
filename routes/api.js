@@ -3,8 +3,8 @@ const router = express.Router()
 const controllers = require('../controllers')
 
 router.get('/:resource', (req, res, next) => {
-	var resource = req.params.resource;
-	var controller = controllers[resource]
+	let  resource = req.params.resource;
+	let  controller = controllers[resource]
 	if (controller == null){
 		res.json({
 			confirmation:'fail',
@@ -25,17 +25,21 @@ router.get('/:resource', (req, res, next) => {
 		})
 	})
 })
-router.get('/:resource/:id', (req, res, next) =>{
-	var resource = req.params.resource
-	var id = req.params.id
-	var controller  = controllers[resource]
+router.get('/:resource/:field/:value', (req, res, next) =>{
+	let resource = req.params.resource;
+	let field = req.params.field;
+	let value = req.params.value
+	let params = {};
+	params[field] = value;
+	console.log(params)
+	let controller  = controllers[resource];
 	if (controller == null){
 		res.json({
 			confirmation:'fail',
 			message:'Invalid resource...check your spelling'
 		})
 	}
-	controller.getById(id)
+	controller.getByParams(params)
 	.then((result) => {
 		res.json({
 			confirmation: 'success',
@@ -50,8 +54,8 @@ router.get('/:resource/:id', (req, res, next) =>{
 	})
 })
 router.post('/:resource', (req, res, next) => {
-	var resource = req.params.resource
-	var controller = controllers[resource]
+	let resource = req.params.resource;
+	let controller = controllers[resource];
 	if (controller == null){
 		res.json({
 			confirmation:'fail',
@@ -73,8 +77,8 @@ router.post('/:resource', (req, res, next) => {
 	})
 })
 router.put('/:resource/:id', (req, res, next) => {
-	var resource = req.params.resource
-	var id = req.params.id
+	let resource = req.params.resource
+	let id = req.params.id
 	controller.update(id, req.body)
 	.then((redsult) => {
 		res.json({
@@ -90,7 +94,7 @@ router.put('/:resource/:id', (req, res, next) => {
 	})
 })
 router.delete('/:resource/:id', (req, res, next) => {
-  var controller = controllers[req.params.resource]
+  let controller = controllers[req.params.resource]
   controller.remove(id)
   .then((result) => {
     res.json({

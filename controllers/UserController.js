@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const bcrypt = require('bcrypt')
 const Promise = require("bluebird")
 
 module.exports = {
@@ -7,8 +8,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       User.find((err, result) => {
         if (err) {
-          reject(err)
-          return;
+          return reject(err);
         }
         resolve(result);
       })
@@ -19,8 +19,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       User.findById(id, (err, result) => {
         if (err){
-          reject(err)
-          return
+          return reject(err);
         }
         resolve(result)
       })
@@ -29,26 +28,38 @@ module.exports = {
   // Get documents that match a specific parameter
   getByParams: (params) => {
     return new Promise((resolve, reject) => {
-      User.find(params, null, (err, result) => {
+      User.find(params, null, (err, user) => {
         if (err){
-          reject(err)
-          return
+          return reject(err);
         }
-        resolve(result);
+        resolve(user[0].summary());
       })
     })
   },
   // Create a new document
   post: (params) => {
     return new Promise((resolve, reject) => {
-      User.create(params, (err, result) => {
-        if (err){
-          reject(err)
+      console.log("begin post controller")
+      // check to see if this user exists
+      let username = params.username;
+      console.log(username)
+      getByParams({username: username})
+      .then(response => {
+        console.log("we in here")
+        console.log(response);
+        let password = params.password;
+        // encrypt the password
+        params['password'] = bcrypt.hashSync(password, 10);
+        User.create(params, (err, result) => {
+          if (err){
+            reject(err)
+            return
+          }
+          resolve(result)
           return
-        }
-        resolve(result)
-        return
+        })
       })
+      .catch(err => console.log("ERROR"))
     })
   },
 
