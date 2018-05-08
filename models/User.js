@@ -7,7 +7,8 @@ var User = new mongoose.Schema({
   timestamp: {type:Date, default:Date.now}
 })
 
-ProfileSchema.methods.summary = function(){
+// never return the password (even though its encrypted)
+User.methods.summary = function(){
 	var summary = {
 		firstName: this.firstName,
 		lastName: this.lastName,

@@ -4,17 +4,16 @@ import Navbar from '../components/Navigation/Navbar';
 import SideDrawer from '../components/Navigation/SideDrawer/SideDrawer';
 import Arena from './Arena/Arena'
 import Instructions from './Instructions/Instructions';
+import WelcomePage from './WelcomePage/WelcomePage'
 import api from '../utils/api/api'
 import { Route } from 'react-router';
 // for mobile only
-// import SideMenu from '../Navigation/SideMenu/SideMenu'
-// wrapper component -- we pass the children to the main section
 class Layout extends Component{
   state = {
     showSideDrawer: false,
   }
   componentDidMount(){
-    
+
   }
   sideDrawerClosedHandler = () => {
     this.setState({showSideDrawer: false})
@@ -36,7 +35,7 @@ class Layout extends Component{
         <Navbar opened={this.sideDrawerOpenedHandler}/>
         <main className={classes.Content}>
           <Route path='/Play' exact component={Arena} />
-          <Route path="/" exact component={Instructions}/>
+          <Route path="/" exact component={WelcomePage}/>
         </main>
       </div>
     )

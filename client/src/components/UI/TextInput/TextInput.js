@@ -6,15 +6,20 @@ class TextInput extends Component{
     this.textInput.focus()
   }
   render(){
+    let type = 'text';
+    if (this.props.inputType){
+      type = this.props.inputType;
+    }
     return(
       <input
         ref={(input) => {this.textInput = input}}
         onChange={this.props.changed}
-        type="text"
+        type={type}
         value={this.props.guess}
         className={classes.TextInput}
+        placeholder={this.props.placeHolder}
       />
     )
-  }  
+  }
 }
 export default TextInput

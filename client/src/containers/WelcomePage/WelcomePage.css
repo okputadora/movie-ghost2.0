@@ -2,56 +2,29 @@
   position: fixed;
   top: 140px;
   width: 70%;
+  height: 40%;
   text-align: center;
   left: 15%;
   box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2);
   border-radius: 6px;
 }
 
+.Login{
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  align-items: center;
+}
 .Title {
   font-size: 2.5em;
   font-weight: lighter;
   padding: 10px;
+  margin: 0 0;
   font-family: 'Tangerine', cursive;
-}
-
-.Prompt {
-  margin-bottom: 15px;
-}
-.oppOptions {
-  display: flex;
-  justify-content: space-around;
-}
-
-.Opt {
-  padding: 2px;
-  border: 1px solid #a8a8a8;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
-  width: 25px;
-  height: 25px;
-  margin-bottom: 5px;
-  cursor: pointer;
 }
 
 .Text{
   font-size: .7em;
   padding: 10px;
-}
-
-.Selected {
-  background-color: rgba(100,53,17,0.32)
-}
-
-@media (min-width: 500px) {
-  .Welcome {
-    height: auto;
-  }
-  .oppOptions {
-    justify-content: center;
-  }
-  .Opt{
-    margin: 10px;
-  }
 }
