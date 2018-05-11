@@ -36,11 +36,12 @@ class WelcomePage extends Component{
       console.log(response)
       if (response.confirmation === 'fail'){
         console.log(response.message)
-        this.setState({
+        return this.setState({
           error: response.message,
           modal: true
         })
       }
+      console.log(response)
     })
   }
 

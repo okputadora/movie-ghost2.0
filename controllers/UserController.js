@@ -66,7 +66,7 @@ module.exports = {
             reject("You entered an incorrect password or that username is already in use")
             return;
           }
-          resolve("correct password")
+          resolve(users[0].summary())
         })
       })
     })

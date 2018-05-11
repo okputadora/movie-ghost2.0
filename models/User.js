@@ -8,7 +8,8 @@ var User = new mongoose.Schema({
 // never return the password (even though its encrypted)
 User.methods.summary = function(){
 	var summary = {
-		username: this.firstName
+		username: this.username,
+    id: this._id
   }
 	return summary;
 }

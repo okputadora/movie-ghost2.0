@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGO_URI, (err, res) => {
 // setup session storage
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   store: new MongoStore({mongooseConnection: mongoose.connection}),
   cookie: {maxAge: 60 * 60 * 1000}

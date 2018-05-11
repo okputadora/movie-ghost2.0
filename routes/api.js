@@ -65,6 +65,10 @@ router.post('/:resource', (req, res, next) => {
   console.log(req.body)
 	controller.post(req.body)
 	.then((result) => {
+    req.session.userId = result.id
+    console.log(result)
+    console.log(req.session)
+    console.log(req.session.userId)
 		res.json({
 			confirmation: 'success',
 			result: result
