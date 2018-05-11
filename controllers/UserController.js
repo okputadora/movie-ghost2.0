@@ -43,14 +43,12 @@ module.exports = {
       console.log("begin post controller")
       // check to see if this user exists
       let username = params.username;
-      User.find({username: username}, null, (err, user) => {
-        console.log("looking for user")
-        if (err) {
-          console.log("couldn't find")
+      User.find({username: username}, null, (err, users) => {
+        if (users.length === 0){
           // create user
           let password = params.password;
           // encrypt the password
-          params['password'] = bcrypt.hashSync(password, 10);
+          params.password = bcrypt.hashSync(password, 10);
           User.create(params, (err, result) => {
             if (err){
               reject(err)
@@ -61,9 +59,15 @@ module.exports = {
           })
           return;
         }
-        console.log("found")
-        console.log(user)
-        reject("That username is already in use")
+        // else check the password
+        bcrypt.compare(params.password, users[0].password, (err, res) => {
+          if (err){
+            console.log(err)
+            reject("You entered an incorrect password or that username is already in use")
+            return;
+          }
+          resolve("correct password")
+        })
       })
     })
   },
