@@ -8,11 +8,12 @@ module.exports = {
         resolve(result.data)
       })
     })
-    // return new Promise((resolve, reject) => {
-    //   axios.post("/api/user", data)
-    //   .then(result => {
-    //     resolve(result)
-    //   })
-    // })
+  },
+
+  getUserInfo: () => {
+    return new Promise((resolve, reject) => {
+      axios.get("api/user")
+      .then(result => resolve(result))
+    })
   }
 }

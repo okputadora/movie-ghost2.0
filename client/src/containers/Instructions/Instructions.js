@@ -8,7 +8,7 @@ class Instructions extends Component{
     return(
       <div className={classes.Instructions}>
         <div className={classes.Header}>Instructions</div>
-        <img src={divider} height="30px"/>
+        <img src={divider} height="30px" alt=''/>
         <p className={classes.Text}>This game tests your knowledge of movies and actors</p>
         <p className={classes.Text}>To start, one player says the name of any movie</p>
         <p className={classes.Text}>Then the next player has to say the name of an actor in that movie</p>

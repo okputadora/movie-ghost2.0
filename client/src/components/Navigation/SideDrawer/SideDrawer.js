@@ -17,6 +17,7 @@ const sideDrawer = (props) => {
           <NavigationItem link='/Play' mobileMenu>New Game</NavigationItem>
           <NavigationItem link='/' mobileMenu>How to Play</NavigationItem>
           <NavigationItem mobileMenu>Leaderboard</NavigationItem>
+          <NavigationItem mobileMenu link="/account">Account</NavigationItem>
         </nav>
       </div>
     </Aux>

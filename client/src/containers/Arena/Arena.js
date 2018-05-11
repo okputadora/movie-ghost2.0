@@ -342,7 +342,7 @@ class Arena extends Component{
         {/* This Modal below will eventually be its own page ... as soon as I implement redux */}
         <Modal show={this.state.gameSettings}>
           <div className={welcomeClasses.Title}>Start a new game</div>
-          <img src={divider} height="30px"/>
+          <img src={divider} height="30px" alt=''/>
           <div>Enter your name</div>
           <TextInput changed={this.updateUsername}/>
           <div className={welcomeClasses.Prompt}>Select number of opponents</div>

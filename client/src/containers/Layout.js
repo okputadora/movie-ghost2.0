@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import classes from './Layout.css';
 import Navbar from '../components/Navigation/Navbar';
 import SideDrawer from '../components/Navigation/SideDrawer/SideDrawer';
-import Arena from './Arena/Arena'
+import WelcomePage from './WelcomePage/WelcomePage';
+import Arena from './Arena/Arena';
 import Instructions from './Instructions/Instructions';
-import WelcomePage from './WelcomePage/WelcomePage'
-import api from '../utils/api/api'
+import Account from './Account/Account';
 import { Route } from 'react-router';
 // for mobile only
 class Layout extends Component{
@@ -34,8 +34,10 @@ class Layout extends Component{
         />
         <Navbar opened={this.sideDrawerOpenedHandler}/>
         <main className={classes.Content}>
-          <Route path='/Play' exact component={Arena} />
           <Route path="/" exact component={WelcomePage}/>
+          <Route path='/Play' exact component={Arena} />
+          <Route path="/instructions" exact component={Instructions}/>
+          <Route path="/account" exact component={Account}/>
         </main>
       </div>
     )

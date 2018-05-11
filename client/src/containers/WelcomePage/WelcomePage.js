@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classes from './WelcomePage.css';
-import divider from '../../assets/divider.png';
 import TextInput from '../../components/UI/TextInput/TextInput';
 import Modal from '../../components/UI/Modal/Modal';
 import Button from '../../components/UI/Button/Button';

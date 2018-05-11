@@ -16,7 +16,9 @@ module.exports = {
   },
   // get document that matches id
   getById: (id) => {
+    console.log("getting by id ",id)
     return new Promise((resolve, reject) => {
+      console.log(id)
       User.findById(id, (err, result) => {
         if (err){
           return reject(err);

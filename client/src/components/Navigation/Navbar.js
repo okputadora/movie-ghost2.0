@@ -10,6 +10,7 @@ const navBar = (props) => (
       <NavigationItem link="/Play">New Game</NavigationItem>
       <NavigationItem link="/">How to Play</NavigationItem>
       <NavigationItem link="/">Leaderboard</NavigationItem>
+      <NavigationItem link="/account">Account</NavigationItem>
     </div>
   </nav>
 )

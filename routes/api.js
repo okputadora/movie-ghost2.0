@@ -2,7 +2,9 @@ const express = require('express')
 const router = express.Router()
 const controllers = require('../controllers')
 
+
 router.get('/:resource', (req, res, next) => {
+  console.log("GETTING USER INFO")
 	let  resource = req.params.resource;
 	let  controller = controllers[resource]
 	if (controller == null){
@@ -11,19 +13,24 @@ router.get('/:resource', (req, res, next) => {
 			message:'Invalid resource...check your spelling'
 		})
 	}
-	controller.get(req.query, false)
-	.then((results) => {
-		res.json({
-	    confirmation: 'success',
-	    results: results
-	  })
-	})
-	.catch((err) => {
-		res.json({
-			confirmation: 'fail',
-			message: err
-		})
-	})
+  if (resource === 'user'){
+    id = req.session.userId
+    console.log("id: ",id)
+    controller.getById(id)
+    .then((result) => {
+      res.json({
+        confirmation: 'success',
+        results: result
+      })
+    })
+    .catch((err) => {
+      console.log("ERROR")
+      res.json({
+        confirmation: 'fail',
+        message: err
+      })
+    })
+  }
 })
 router.get('/:resource/:field/:value', (req, res, next) =>{
 	let resource = req.params.resource;
