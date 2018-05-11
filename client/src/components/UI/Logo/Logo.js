@@ -1,8 +1,9 @@
 import React from 'react';
 import classes from './Logo.css';
+import { Link } from 'react-router-dom';
 
 const Logo = (props) => (
-  <div className={classes.Logo}><a href={props.link}>{props.children}</a></div>
+  <div className={classes.Logo}><Link to={props.link}>{props.children}</Link></div>
 )
 
 export default Logo;

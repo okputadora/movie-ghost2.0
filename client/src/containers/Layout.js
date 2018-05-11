@@ -35,7 +35,7 @@ class Layout extends Component{
         <Navbar opened={this.sideDrawerOpenedHandler}/>
         <main className={classes.Content}>
           <Route path="/" exact component={WelcomePage}/>
-          <Route path='/Play' exact component={Arena} />
+          <Route path='/play' exact component={Arena} />
           <Route path="/instructions" exact component={Instructions}/>
           <Route path="/account" exact component={Account}/>
         </main>

@@ -6,10 +6,10 @@ const navBar = (props) => (
   <nav className={classes.Navbar}>
     <Logo link="/">MovieGhost</Logo>
     <div className={classes.menuOptions}>
-      <NavigationItem mobileMenu clicked={props.opened}><i className="fas fa-bars"></i></NavigationItem>
-      <NavigationItem link="/Play">New Game</NavigationItem>
-      <NavigationItem link="/">How to Play</NavigationItem>
-      <NavigationItem link="/">Leaderboard</NavigationItem>
+      <NavigationItem link="" mobileMenu clicked={props.opened}><i className="fas fa-bars"></i></NavigationItem>
+      <NavigationItem link="/play">New Game</NavigationItem>
+      <NavigationItem link="/instructions">How to Play</NavigationItem>
+      <NavigationItem link="/leaderboard">Leaderboard</NavigationItem>
       <NavigationItem link="/account">Account</NavigationItem>
     </div>
   </nav>

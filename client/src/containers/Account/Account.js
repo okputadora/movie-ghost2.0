@@ -26,6 +26,10 @@ class Account extends Component{
   }
 
   render(){
+    // let trail
+    // if (this.state.savedTrails.length === 0){
+    //   trail = "You have not saved any trails yet"
+    // }
     return(
       <div>
         <h3 className={classes.Header}>Account Info</h3>

@@ -3,7 +3,7 @@ import classes from './WelcomePage.css';
 import TextInput from '../../components/UI/TextInput/TextInput';
 import Modal from '../../components/UI/Modal/Modal';
 import Button from '../../components/UI/Button/Button';
-import Aux from '../../hoc/Auxil'
+import Aux from '../../hoc/Auxil';
 
 import api from '../../utils/api/api';
 
@@ -40,7 +40,6 @@ class WelcomePage extends Component{
           modal: true
         })
       }
-      console.log(response)
     })
   }
 

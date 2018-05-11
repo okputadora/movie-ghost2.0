@@ -14,10 +14,10 @@ const sideDrawer = (props) => {
       <Backdrop show={props.open} clicked={props.closed}/>
       <div className={attachedClasses.join(" ")}>
         <nav>
-          <NavigationItem link='/Play' mobileMenu>New Game</NavigationItem>
-          <NavigationItem link='/' mobileMenu>How to Play</NavigationItem>
-          <NavigationItem mobileMenu>Leaderboard</NavigationItem>
-          <NavigationItem mobileMenu link="/account">Account</NavigationItem>
+          <NavigationItem link='/play' mobileMenu>New Game</NavigationItem>
+          <NavigationItem link='/instructions' mobileMenu>How to Play</NavigationItem>
+          <NavigationItem link='/leaderboard' mobileMenu>Leaderboard</NavigationItem>
+          <NavigationItem link="/account" mobileMenu>Account</NavigationItem>
         </nav>
       </div>
     </Aux>
