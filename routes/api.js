@@ -54,7 +54,6 @@ router.get('/:resource/:field/:value', (req, res, next) =>{
 	})
 })
 router.post('/:resource', (req, res, next) => {
-  console.log(req.body)
 	let resource = req.params.resource;
 	let controller = controllers[resource];
 	if (controller == null){
@@ -63,6 +62,7 @@ router.post('/:resource', (req, res, next) => {
 			message:'Invalid resource...check your spelling'
 		})
 	}
+  console.log(req.body)
 	controller.post(req.body)
 	.then((result) => {
 		res.json({

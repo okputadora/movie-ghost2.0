@@ -28,6 +28,7 @@ module.exports = {
   // Get documents that match a specific parameter
   getByParams: (params) => {
     return new Promise((resolve, reject) => {
+      console.log(params)
       User.find(params, null, (err, user) => {
         if (err){
           return reject(err);
@@ -42,24 +43,28 @@ module.exports = {
       console.log("begin post controller")
       // check to see if this user exists
       let username = params.username;
-      console.log(username)
-      getByParams({username: username})
-      .then(response => {
-        console.log("we in here")
-        console.log(response);
-        let password = params.password;
-        // encrypt the password
-        params['password'] = bcrypt.hashSync(password, 10);
-        User.create(params, (err, result) => {
-          if (err){
-            reject(err)
+      User.find({username: username}, null, (err, user) => {
+        console.log("looking for user")
+        if (err) {
+          console.log("couldn't find")
+          // create user
+          let password = params.password;
+          // encrypt the password
+          params['password'] = bcrypt.hashSync(password, 10);
+          User.create(params, (err, result) => {
+            if (err){
+              reject(err)
+              return
+            }
+            resolve(result)
             return
-          }
-          resolve(result)
-          return
-        })
+          })
+          return;
+        }
+        console.log("found")
+        console.log(user)
+        reject("That username is already in use")
       })
-      .catch(err => console.log("ERROR"))
     })
   },
 
