@@ -13,6 +13,15 @@ require('dotenv').config();
 
 var app = express();
 
+mongoose.connect(process.env.MONGO_URI, (err, res) => {
+  if (err){
+    // console.log('DB CONNECTION FAILED: '+err)
+  }
+  else{
+    // console.log('DB CONNECTION SUCCESS: '+ process.env.MONGO_URI)
+  }
+})
+
 // setup session storage
 app.use(session({
   secret: process.env.SESSION_SECRET,

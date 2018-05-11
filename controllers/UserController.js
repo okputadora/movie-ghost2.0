@@ -36,7 +36,7 @@ module.exports = {
       })
     })
   },
-  // Create a new document
+  // Check if a user exists / create a new user
   post: (params) => {
     return new Promise((resolve, reject) => {
       console.log("begin post controller")

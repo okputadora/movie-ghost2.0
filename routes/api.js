@@ -54,6 +54,7 @@ router.get('/:resource/:field/:value', (req, res, next) =>{
 	})
 })
 router.post('/:resource', (req, res, next) => {
+  console.log(req.body)
 	let resource = req.params.resource;
 	let controller = controllers[resource];
 	if (controller == null){
