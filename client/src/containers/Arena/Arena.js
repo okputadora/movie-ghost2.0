@@ -343,8 +343,6 @@ class Arena extends Component{
         <Modal show={this.state.gameSettings}>
           <div className={welcomeClasses.Title}>Start a new game</div>
           <img src={divider} height="30px" alt=''/>
-          <div>Enter your name</div>
-          <TextInput changed={this.updateUsername}/>
           <div className={welcomeClasses.Prompt}>Select number of opponents</div>
           {oppButtons}
           <Button clicked={this.submitSettings}>Play</Button>

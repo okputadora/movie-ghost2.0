@@ -40,6 +40,8 @@ class WelcomePage extends Component{
           modal: true
         })
       }
+      console.log(this.props)
+      this.props.history.push("/play")
     })
   }
 
