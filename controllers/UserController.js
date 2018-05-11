@@ -19,11 +19,11 @@ module.exports = {
     console.log("getting by id ",id)
     return new Promise((resolve, reject) => {
       console.log(id)
-      User.findById(id, (err, result) => {
+      User.findById(id, (err, user) => {
         if (err){
           return reject(err);
         }
-        resolve(result)
+        resolve(user.summary())
       })
     })
   },

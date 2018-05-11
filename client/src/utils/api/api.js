@@ -13,7 +13,7 @@ module.exports = {
   getUserInfo: () => {
     return new Promise((resolve, reject) => {
       axios.get("api/user")
-      .then(result => resolve(result))
+      .then(result => resolve(result.data.results))
     })
   }
 }
