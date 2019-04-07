@@ -7,9 +7,9 @@ import Trail from '../../components/Trail/Trail';
 import Aux from '../../hoc/Auxil';
 import Modal from '../../components/UI/Modal/Modal';
 import divider from '../../assets/divider.png';
-import TextInput from '../../components/UI/TextInput/TextInput';
 import Button from '../../components/UI/Button/Button';
 import mdb from '../../utils/mdb/mdbFunctions';
+
 class Arena extends Component{
   state = {
     gameSettings: true,
@@ -29,14 +29,6 @@ class Arena extends Component{
         // handle differenct contexts of Enter clicks
         if (this.state.gameSettings){
           this.submitSettings();
-        }
-        // if theres a guess and the enter button isn't in focus
-        else if (this.state.guess.length > 1 && document.activeElement.innerHTML !== 'Enter'){
-          this.guessHandler();
-        }
-        // if the modals open 'enter' should close it
-        else if (this.state.wrongAnswer.show) {
-          this.closeModal();
         }
       }
     })
@@ -338,6 +330,7 @@ class Arena extends Component{
         <Modal show={this.state.wrongAnswer.show} closeModal={this.closeModal}>
           <div>{this.state.wrongAnswer.reason}</div>
           {score}
+          <Button>Save Trail</Button>
         </Modal>
         {/* This Modal below will eventually be its own page ... as soon as I implement redux */}
         <Modal show={this.state.gameSettings}>

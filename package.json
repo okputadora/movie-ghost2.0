@@ -3,10 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "prettier-watch": "onchange '**/*.js' -- prettier --write {{changed}}"
   },
   "dependencies": {
-    "bcrypt": "^2.0.1",
+    "bcrypt": "^3.0.5",
     "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "connect-mongo": "^2.0.1",
@@ -19,5 +22,10 @@
     "mongoose": "^5.0.17",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10",
+    "prettier": "^1.16.4"
   }
 }
