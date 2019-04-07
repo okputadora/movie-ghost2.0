@@ -1,5 +1,7 @@
 .Avatars {
   display: flex;
+  flex-flow: column;
   justify-content: center;
   height: auto;
+  border: 1px solid red;
 }
