@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classes from "./Arena.css";
 import welcomeClasses from "./Welcome.css";
-import Instruction from "../../components/Instruction/Instruction";
+import Instruction from "./Instruction/Instruction";
 import Controls from "./Controls/Controls";
 import Trail from "../../components/Trail/Trail";
 import Aux from "../../hoc/Auxil";
@@ -34,7 +34,7 @@ class Arena extends Component {
     if (!this.state.activePlayer.human && this.state.gameSettings === false) {
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
-      setTimeout(this.robotGuess, 1000);
+      setTimeout(this.robotGuess, 1500);
     }
   }
 
@@ -302,8 +302,6 @@ class Arena extends Component {
   render() {
     // highlight the modal game settings opp no.
     let score = <div />;
-    let instruction;
-    let controls;
     if (this.state.players[0]) {
       score = (
         <div>
@@ -358,7 +356,6 @@ class Arena extends Component {
           </p>
         </Modal>
         <div className={classes.Arena}>
-          {instruction}
           <Trail trail={this.state.trail} />
           <Controls
             humanPlayer={this.state.activePlayer.human}
@@ -367,9 +364,13 @@ class Arena extends Component {
             players={this.state.players}
             active={this.state.activePlayer}
             guess={this.state.guess}
-            lastEntry={this.state.trail[0]}
-            activePlayer={this.state.activePlayer.name}
-            acceptingMovie={this.state.movie}
+            instruction={
+              <Instruction
+                lastEntry={this.state.trail[0]}
+                activePlayer={this.state.activePlayer.name}
+                acceptingMovie={this.state.movie}
+              />
+            }
           />
         </div>
       </Aux>

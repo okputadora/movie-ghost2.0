@@ -13,7 +13,12 @@
 .Controls {
   display: flex;
   width: 800px;
-  border: 1px solid yellow;
+}
+
+.Prompt {
+  flex: 2;
+  display: flex;
+  flex-flow: column;
 }
 
 .Players {
