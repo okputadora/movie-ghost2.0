@@ -15,12 +15,13 @@
     "connect-mongo": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dominant-color": "0.0.1",
     "dotenv": "^5.0.1",
-    "express": "~4.15.5",
+    "express": "^4.16.4",
     "express-session": "^1.15.6",
     "jade": "~1.11.0",
-    "mongoose": "^5.0.17",
-    "morgan": "~1.9.0",
+    "mongoose": "^5.5.0",
+    "morgan": "^1.9.1",
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {

@@ -1,5 +1,20 @@
 .Arena {
   display: flex;
-  flex-flow: column;
+  /* flex-flow: column; */
   justify-content: flex-start;
+  height: calc(100vh - 60px);
+  /* border: 1px solid red; */
+  overflow: none;
+}
+
+.Trail {
+  width: 66%;
+  /* margin: 0 10px; */
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.Controls {
+  width: 44%;
 }

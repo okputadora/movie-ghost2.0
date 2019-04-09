@@ -6,17 +6,17 @@ import classes from "./Controls.css";
 const controls = props => {
   return (
     <div className={classes.Container}>
-      <div className={classes.Controls}>
+      <div className={classes.Prompt}>
+        <div className={classes.Instructions}>{props.instruction}</div>
+        <Submission
+          humanPlayer={props.humanPlayer}
+          guessListener={props.guessListener}
+          guessed={props.guessed}
+          guess={props.guess}
+        />
+      </div>
+      <div className={classes.Players}>
         <Avatars active={props.active} players={props.players} />
-        <div className={classes.Prompt}>
-          <Submission
-            humanPlayer={props.humanPlayer}
-            guessListener={props.guessListener}
-            guessed={props.guessed}
-            guess={props.guess}
-          />
-          {props.instruction}
-        </div>
       </div>
     </div>
   );

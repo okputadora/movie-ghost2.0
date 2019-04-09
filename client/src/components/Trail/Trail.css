@@ -1,18 +1,41 @@
-.Trail {
-  box-sizing: content-box;
-  display: flex;
+.TrailContainer {
   padding-bottom: 170px;
-  flex-wrap: wrap;
   margin-top: 5px;
   width: 100%;
   padding-right: 16px;
-  align-items: flex-start;
-  justify-content: center;
   overflow-y: scroll;
-  overflow-x: hidden;
 }
 
-@media (min-width: 500px){
+.SubContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding-left: 15%;
+  width: 80%;
+}
+
+.TrailContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.TrailContainer::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey;
+  border-radius: 5px;
+}
+
+/* Handle */
+.TrailContainer::-webkit-scrollbar-thumb {
+  background: #232323;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.TrailContainer::-webkit-scrollbar-thumb:hover {
+  background: #232323;
+}
+
+@media (min-width: 500px) {
   .Trail {
     padding-bottom: 290px;
   }

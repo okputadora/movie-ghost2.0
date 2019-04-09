@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import _has from "lodash.has";
 import classes from "./Arena.css";
 import welcomeClasses from "./Welcome.css";
 import Instruction from "./Instruction/Instruction";
@@ -9,6 +10,8 @@ import Modal from "../../components/UI/Modal/Modal";
 import divider from "../../assets/divider.png";
 import Button from "../../components/UI/Button/Button";
 import mdb from "../../utils/mdb/mdbFunctions";
+import ColorThief from "color-thief";
+const colorThief = new ColorThief();
 
 class Arena extends Component {
   state = {
@@ -24,18 +27,33 @@ class Arena extends Component {
     wrongAnswer: {}
   };
   componentDidMount() {
+    let trailString = localStorage.getItem("trail");
+    if (trailString) {
+      this.setState({ trail: JSON.parse(trailString) });
+    }
     document.addEventListener("keydown", this.keypressHandler);
   }
   componenetWillUnmount() {
     document.removeEventListener("keydown", this.keypressHandler);
   }
-  componentDidUpdate() {
+  componentDidUpdate(nextProps, nextState) {
     // if its a robots turn
     if (!this.state.activePlayer.human && this.state.gameSettings === false) {
       // wait a little bit for a better UX
       // and then let the robot make a "guess"
       setTimeout(this.robotGuess, 1500);
     }
+    // TRYING THINGS WITH DYNAMIC COLORS BASED ON THE IMAGE RETURNED FROM THE MOVIE DB
+    // if (this.state.trail.length !== nextState.trail.length) {
+    //   console.log(nextState.trail[nextState.trail.length - 1]);
+    //   // let imageUrl;
+    //   if (_has(nextState.trail[nextState.trail.length - 1], "image")) {
+    //     let imageUrl = nextState.trail[nextState.trail.length - 1].image;
+    //     console.log(imageUrl);
+    //     let color = colorThief.getColor(<img src={imageUrl} />);
+    //     console.log("color: ", color);
+    //   }
+    // }
   }
 
   keypressHandler = event => {
@@ -273,6 +291,7 @@ class Arena extends Component {
       // update movie or actor for next search
       let acceptingMovie = this.state.movie ? false : true;
       // update state
+      localStorage.setItem("trail", JSON.stringify(updatedTrail));
       this.setState({
         activePlayer: updatedActivePlayer,
         trail: updatedTrail,
@@ -356,22 +375,26 @@ class Arena extends Component {
           </p>
         </Modal>
         <div className={classes.Arena}>
-          <Trail trail={this.state.trail} />
-          <Controls
-            humanPlayer={this.state.activePlayer.human}
-            guessListener={this.updateGuess}
-            guessed={this.guessHandler}
-            players={this.state.players}
-            active={this.state.activePlayer}
-            guess={this.state.guess}
-            instruction={
-              <Instruction
-                lastEntry={this.state.trail[0]}
-                activePlayer={this.state.activePlayer.name}
-                acceptingMovie={this.state.movie}
-              />
-            }
-          />
+          <div className={classes.Controls}>
+            <Controls
+              humanPlayer={this.state.activePlayer.human}
+              guessListener={this.updateGuess}
+              guessed={this.guessHandler}
+              players={this.state.players}
+              active={this.state.activePlayer}
+              guess={this.state.guess}
+              instruction={
+                <Instruction
+                  lastEntry={this.state.trail[0]}
+                  activePlayer={this.state.activePlayer.name}
+                  acceptingMovie={this.state.movie}
+                />
+              }
+            />
+          </div>
+          <div className={classes.Trail}>
+            <Trail trail={this.state.trail} />
+          </div>
         </div>
       </Aux>
     );

@@ -1,7 +1,43 @@
+@keyframes Rotate3d {
+  0% {
+    transform: perspective(500px) translateZ(0) translateX(0);
+    z-index: 100;
+  }
+  25% {
+    transform: perspective(500px) translateZ(-300px) translateX(-150px);
+    z-index: 50;
+  }
+  50% {
+    transform: perspective(500px) translateZ(-300px) translateX(0);
+    z-index: 0;
+  }
+  75% {
+    transform: perspective(500px) translateZ(-300px) translateX(150px);
+    z-index: 50;
+  }
+  100% {
+    transform: perspective(500px) translateZ(0) translateX(0);
+    z-index: 100;
+  }
+}
+
 .Avatars {
   display: flex;
-  flex-flow: column;
+  /* flex-flow: column; */
   flex: 0 1 1;
-  justify-content: center;
+  justify-content: space-around;
   height: auto;
+  position: relative;
+}
+.Avatar {
+  transform: perspective(500px) translateZ(0);
+  transition: 0.3s;
+  cursor: pointer;
+  animation: Rotate3d 6s infinite ease-in-out;
+  position: absolute;
+}
+
+.Avatar:hover {
+  transform: perspective(500px) translateZ(-200px) translateX(300px);
+  color: blue;
 }
