@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import classes from "./Account.css";
+import classes from "./Account.module.css";
 import api from "../../utils/api/api";
 
 import Avatar from "../../components/Avatar/Avatar";

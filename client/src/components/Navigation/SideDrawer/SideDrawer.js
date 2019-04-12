@@ -1,7 +1,7 @@
 import React from 'react';
 import Backdrop from '../../UI/Backdrop/Backdrop'
 import Aux from '../../../hoc/Auxil'
-import classes from './SideDrawer.css'
+import classes from './SideDrawer.module.css'
 import NavigationItem from '../NavigationItem/NavigationItem'
 const sideDrawer = (props) => {
   // conditionall attach css classes for animation

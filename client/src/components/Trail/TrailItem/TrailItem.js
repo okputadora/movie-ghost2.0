@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './TrailItem.css'
+import classes from './TrailItem.module.css'
 
 const trailItem = (props) => {
   let style = classes.TrailItem;

@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./Submission.css";
+import classes from "./Submission.module.css";
 import TextInput from "../../../../components/UI/TextInput/TextInput";
 import Button from "../../../../components/UI/Button/Button";
 

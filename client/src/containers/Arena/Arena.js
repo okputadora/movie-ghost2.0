@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import _has from "lodash.has";
-import classes from "./Arena.css";
-import welcomeClasses from "./Welcome.css";
+import classes from "./Arena.module.css";
+import welcomeClasses from "./Welcome.module.css";
 import Instruction from "./Instruction/Instruction";
 import Controls from "./Controls/Controls";
 import Trail from "../../components/Trail/Trail";

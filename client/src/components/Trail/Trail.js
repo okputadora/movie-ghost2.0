@@ -1,6 +1,6 @@
 import React from "react";
 import TrailItem from "./TrailItem/TrailItem";
-import classes from "./Trail.css";
+import classes from "./Trail.module.css";
 
 const trail = props => {
   // we can use item as a key because the rules of the game dictate

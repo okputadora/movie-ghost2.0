@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classes from './Instructions.css'
+import classes from './Instructions.module.css'
 import divider from '../../assets/divider.png';
 
 

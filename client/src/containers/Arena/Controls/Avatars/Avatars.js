@@ -1,6 +1,6 @@
 import React from "react";
 import Avatar from "../../../../components/Avatar/Avatar";
-import classes from "./Avatars.css";
+import classes from "./Avatars.module.css";
 
 const avatars = props => {
   const avatarElems = props.players.map((player, i) => {

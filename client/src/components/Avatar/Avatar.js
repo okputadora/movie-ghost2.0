@@ -1,6 +1,6 @@
 import React from "react";
 import blankAvatar from "./blankAvatar.png";
-import classes from "./Avatar.css";
+import classes from "./Avatar.module.css";
 const avatar = props => {
   // conditionally render image size based on active status
   let imgClass = classes.OnDeck;

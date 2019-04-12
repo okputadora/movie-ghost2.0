@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classes from './TextInput.css';
+import classes from './TextInput.module.css';
 
 class TextInput extends Component{
   componentDidMount(){

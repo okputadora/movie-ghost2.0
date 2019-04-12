@@ -1,7 +1,7 @@
 import React from "react";
 import Avatars from "./Avatars/Avatars";
 import Submission from "./Submission/Submission";
-import classes from "./Controls.css";
+import classes from "./Controls.module.css";
 
 const controls = props => {
   return (
